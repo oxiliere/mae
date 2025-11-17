@@ -1,28 +1,64 @@
 # MAE – Passport Publication Service
 
-MAE is a digital platform designed to publish the list of received passports online.  
-Instead of requiring citizens to travel to physical locations to check printed lists, MAE provides a simple and accessible way to verify whether their passport has arrived.
+MAE is a digital platform designed to publish online lists of received passports.
+It replaces the traditional process of posting printed lists at physical locations, allowing citizens to check the status of their passport from anywhere.
+
+MAE improves transparency, reduces unnecessary travel, and offers a modern and reliable communication tool for public institutions.
+
+---
+
+### **Goals**
+
+* Simplify access to passport information
+* Reduce queues and unnecessary travel
+* Offer a modern, digital public service
+* Ensure transparency and trust through reliable data publication
 
 ## Features
 
 - Online publication of received passport lists
-- Centralized and always up-to-date information
-- Accessible from any device (mobile or desktop)
-- Reduces the need for physical travel
-- Improves transparency and communication with the public
+- Real-time updates when new passports arrive
+- Search and filtering capabilities
+- Mobile-friendly public interface
+- Secure administrator dashboard
+- API endpoints for integrations with other systems
+- Audit-ready logs for traceability
+
+---
+
+## System Overview
+
+MAE is composed of three main components:
+
+1. **Backend API**
+   Handles passport records, publication logic, authentication, permissions, and data validation.
+2. **Admin Dashboard**
+   A secure interface where authorized personnel can add, update, or publish passport data.
+3. **Public Portal**
+   A lightweight web interface allowing users to search for their passport status.
+
+---
 
 ## How It Works
 
-1. Passport arrival data is registered in the system.
-2. The platform automatically publishes the updated list.
-3. Users can visit the public interface and search for their information.
-4. Administrators manage entries through a secured backend interface.
+1. Passport arrival data is recorded by an administrator.
+2. The backend updates the published list using the defined business rules.
+3. The public portal retrieves the updated records through the API.
+4. Citizens search for their passport by name, reference number, or batch code.
 
-## Goals
+### **Goals**
 
-- Simplify access to passport status information
-- Reduce overcrowding and long queues at physical offices
-- Provide a modern and reliable public communication tool
+* Simplify access to passport information
+* Reduce queues and unnecessary travel
+* Offer a modern, digital public service
+* Ensure transparency and trust through reliable data publication
 
+### Installation
 
+### Requirements
 
+- Python 3.10+
+- Django / Django-Ninja (or the chosen stack)
+- PostgreSQL or MySQL database
+- Redis (for caching, background tasks, or real-time updates)
+- Git for version control

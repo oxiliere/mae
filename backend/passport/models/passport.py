@@ -5,6 +5,7 @@ from passport.enums import PassportStatus, BatchStatus
 from django.utils.translation import gettext_lazy as _
 from safedelete.models import SafeDeleteModel, SOFT_DELETE_CASCADE
 from organisations.models.organisations import Organization
+from auditlog.registry import auditlog
 
 
 
@@ -45,11 +46,35 @@ class Batch(SafeDeleteModel, BaseModelMixin):
     )
 
 
+    def set_organization(self, organization_id: int):
+        """
+        Assigns an organization to this batch by its ID.
+
+        Args:
+            organization_id (int): ID of the organization to assign.
+
+        Raises:
+            Organization.DoesNotExist: If no organization with the given ID exists.
+        """
+        try:
+    
+            organization = Organization.objects.get(id=organization_id)
+            self.organization = organization
+            self.save(update_fields=["organization"])
+
+        except Organization.DoesNotExist:
+        
+            raise Organization.DoesNotExist(
+                f"Organization with ID {organization_id} does not exist."
+            )
+
+            
     def __str__(self):
         """
         String representation of a batch.
         """
         return f"Batch: {self.received_date} - {self.status}"
+
 
 
 class Passport(SafeDeleteModel, BaseModelMixin):
@@ -135,3 +160,9 @@ class Passport(SafeDeleteModel, BaseModelMixin):
         """
         return f"Passport {self.code} for {self.first_name} \
                  {self.last_name} (Batch: {self.batch.received_date})"
+
+
+
+auditlog.register(Batch)
+auditlog.register(Passport)
+

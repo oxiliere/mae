@@ -31,6 +31,7 @@ class CurrentOrganizationMiddleware:
         request.current_organization = self._get_current_organization(request)
         return None
     
+    
     def _get_current_organization(self, request: HttpRequest):
         """
         Récupère l'organisation courante depuis les headers ou kwargs.

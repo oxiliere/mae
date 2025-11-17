@@ -44,6 +44,7 @@ class UserManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 
 
+
 class User(AbstractUser, SafeDeleteModel, BaseModelMixin):
     """
     Modèle d'utilisateur personnalisé qui utilise l'email comme identifiant unique
@@ -113,7 +114,7 @@ class User(AbstractUser, SafeDeleteModel, BaseModelMixin):
         Retourne le prénom de l'utilisateur.
         """
         return self.first_name
-    
+
 
 
 # Enregistrement des modèles pour l'audit logging

@@ -19,7 +19,6 @@ from organisations.enums import  TimeZoneEnum
 
 
 
-
 class Organization(AbstractOrganization, SafeDeleteModel, UUIDPrimaryKeyMixin):
     """Core organization model"""
     _safedelete_policy = SOFT_DELETE_CASCADE
@@ -70,7 +69,9 @@ class Organization(AbstractOrganization, SafeDeleteModel, UUIDPrimaryKeyMixin):
         )
     )
     
+
     class Meta:
+
         verbose_name = _('Organisation')
         verbose_name_plural = _('Organisations')
         ordering = ['name']
@@ -78,6 +79,7 @@ class Organization(AbstractOrganization, SafeDeleteModel, UUIDPrimaryKeyMixin):
             models.Index(fields=['slug']),
         ]
     
+
     def clean(self):
         super().clean()
         if self.slug:
@@ -85,16 +87,19 @@ class Organization(AbstractOrganization, SafeDeleteModel, UUIDPrimaryKeyMixin):
             if Organization.objects.filter(slug=self.slug).exclude(pk=self.pk).exists():
                 raise ValidationError({'slug': _('Ce préfixe est déjà utilisé par une autre organisation')})
     
+
     def get_active_users_count(self):
         """Return the number of active users in this organization"""
         return self.organization_users.filter(is_active=True).count()
     
+
     def can_add_user(self):
         """Check if organization can add more users based on subscription"""
         plan_max_users = self.subscription_plan.max_users
         if plan_max_users is None:  # Unlimited users
             return True
         return self.get_active_users_count() < plan_max_users
+
 
     def is_admin(self, user):
         """
@@ -104,23 +109,28 @@ class Organization(AbstractOrganization, SafeDeleteModel, UUIDPrimaryKeyMixin):
             True if self.organization_users.filter(user__pk=user.pk, is_admin=True) else False
         )
 
+
     def is_owner(self, user):
         """
         Returns True is user is the organization's owner, otherwise false
         """
         return self.owner.organization_user.user.pk == user.pk
 
+
     def is_member(self, user):
         return self.users.all().filter(pk=user.pk).exists()
 
+
     def __str__(self):
         return f"{self.name} ({self.slug})"
+
 
     def save(self, keep_deleted=False, **kwargs):
         self.clean()
         if self.slug and not self.slug == self.slug:
             self.slug = self.slug
         return super().save(keep_deleted, **kwargs)
+
 
 
 class OrganizationUser(AbstractOrganizationUser, SafeDeleteModel, UUIDPrimaryKeyMixin, ActiveMixin):

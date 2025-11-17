@@ -72,3 +72,8 @@ class OrganizationUserUpdateSchema(ModelSchema):
         model = OrganizationUser
         fields = ['id']
         fields_optional = ['role']
+    
+    
+class AddUserSchema(Schema):
+    email: str
+    is_admin: Optional[bool] = True

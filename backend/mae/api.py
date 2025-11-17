@@ -1,7 +1,10 @@
 from django.core.exceptions import ValidationError
 from django.http import HttpRequest
 from ninja_extra import NinjaExtraAPI
-from organisations.controllers import OrganizationController
+from organisations.controllers import (
+    OrganizationController, 
+    OrganizationUsersController
+)
 from passport.controllers import (
     PassportController, 
     BatchController
@@ -22,6 +25,7 @@ api = NinjaExtraAPI(
 
 api.register_controllers(
     OrganizationController,
+    OrganizationUsersController,
     PassportController,
     BatchController,
 )

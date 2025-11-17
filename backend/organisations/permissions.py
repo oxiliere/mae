@@ -6,6 +6,7 @@ from .base import NullOrganization
 
 
 class OrgBasePermission(permissions.BasePermission):
+
     def __init__(self, skip_id_check = False) -> None:
         self.skip_id_check = skip_id_check
 
@@ -24,19 +25,24 @@ class OrgBasePermission(permissions.BasePermission):
         raise NotImplementedError()
 
 
+
 class IsOrganizationOwner(OrgBasePermission):
+
     def check_has_permission(self, organization, request, controller):
         return organization.is_owner(request.user)
 
 
 class IsOrganizationAdmin(OrgBasePermission):
+
     def check_has_permission(self, organization, request, controller):
         return organization.is_admin(request.user)
     
 
 class IsOrganizationMember(OrgBasePermission):
+
     def check_has_permission(self, organization, request, controller):
         return organization.is_member(request.user)
+
 
 
 class isTargetUser(permissions.BasePermission):

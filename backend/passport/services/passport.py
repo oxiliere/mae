@@ -1,10 +1,10 @@
 from datetime import datetime
 from typing import Optional
+from django.db import transaction
 from django.utils import timezone
 from django.db.models import Q, QuerySet
 from passport.enums import PassportStatus, BatchStatus
 from passport.models import Passport, Batch
-
 
 
 class PassportService:
@@ -24,8 +24,11 @@ class PassportService:
         """Update an existing Passport by ID with the given fields."""
 
         passport = Passport.objects.get(id=passport_id)
+
         for key, value in kwargs.items():
-            setattr(passport, key, value)
+            if value is not None:
+                setattr(passport, key, value)
+
         passport.save()
         return passport
 
@@ -34,8 +37,8 @@ class PassportService:
         """Update only the status field of a Passport."""
         
         passport = Passport.objects.get(id=passport_id)
-        passport.status = status
-        passport.save()
+        passport.status = status.value
+        passport.save(update_fields=["status"])
         return passport
     
 
@@ -43,6 +46,7 @@ class PassportService:
         """Retrieve a single Passport by its ID."""
         
         return Passport.objects.get(id=passport_id)
+
 
     def delete(self, passport_id: int) -> bool:
         """Delete a Passport by its ID."""
@@ -55,9 +59,9 @@ class PassportService:
     def publish(self, passport: Passport, published_at=None) -> Passport:
         """Publish a Passport and set its published_at timestamp."""
     
-        passport.status = PassportStatus.PUBLISHED
+        passport.status = PassportStatus.PUBLISHED.value
         passport.published_at = published_at or timezone.now()
-        passport.save()
+        passport.save(update_fields=["status", "published_at"])
         return passport
     
 
@@ -68,6 +72,7 @@ class PassportService:
         """
 
         qs = Passport.objects.all()
+
         if search:
             qs = qs.filter(
                 Q(code__icontains=search)
@@ -77,12 +82,24 @@ class PassportService:
                 | Q(last_name__icontains=search)
                 | Q(gender__icontains=search)
                 | Q(status__icontains=search)
-                | Q(published_at__icontains=search)
-                | Q(batch__received_date__icontains=search)
+                # Datetime fields can't be icontains safely → convert search to date
+                | Q(published_at__date=search) if self._is_date(search) else Q()
+                | Q(batch__received_date__date=search) if self._is_date(search) else Q()
             )
+
         if kwargs:
             qs = qs.filter(**kwargs)
+
         return qs
+
+
+    def _is_date(self, value: str) -> bool:
+        """Internal safe-check to see if search is a date-like string."""
+        try:
+            datetime.fromisoformat(value)
+            return True
+        except Exception:
+            return False
 
 
 
@@ -92,19 +109,51 @@ class BatchService:
     Provides methods for create, update, delete, search/filter, and publish batches.
     """
 
-    def create(self, received_date: datetime | None = None) -> Batch:
-        """Create a new Batch with an optional received_date."""
+    @transaction.atomic
+    def create(
+        self,
+        organization: int,
+        status: str = BatchStatus.PENDING.value,
+        received_date: Optional[datetime] = None,
+    ) -> Batch:
+        """
+        Create a new Batch with an optional received_date.
+        Rolls back if assigning the organization fails.
+        """
+        
+        batch = Batch.objects.create(
+            received_date=received_date or timezone.now(),
+            status=status,
+        )
+        batch.set_organization(organization)
+        return batch
 
-        return Batch.objects.create(received_date=received_date)
 
-
-    def update(self, batch_id, received_date: datetime | None = None) -> Batch:
-        """Update an existing Batch's received_date by ID."""
+    @transaction.atomic
+    def update(
+        self, 
+        batch_id: int,
+        organization: int | None = None,
+        status: BatchStatus | None = None,
+        received_date: datetime | None = None
+    ) -> Batch:
+        """
+        Update an existing Batch by ID.
+        Rolls back all changes if assigning the organization fails.
+        """
 
         batch = Batch.objects.get(id=batch_id)
-        if received_date:
+
+        if organization is not None:
+            batch.set_organization(organization)
+
+        if received_date is not None:
             batch.received_date = received_date
-            batch.save()
+
+        if status is not None:
+            batch.status = status.value
+
+        batch.save()
         return batch
 
 
@@ -112,7 +161,7 @@ class BatchService:
         """Delete a Batch by ID. Prevents deletion if already published."""
 
         batch = Batch.objects.get(id=batch_id)
-        if batch.status == BatchStatus.PUBLISHED:
+        if batch.status == BatchStatus.PUBLISHED.value:
             raise ValueError("Cannot delete a published batch. Archive it instead.")
         batch.delete()
         return True
@@ -125,8 +174,10 @@ class BatchService:
             qs = self._search(search)
         else:
             qs = Batch.objects.all()
+
         if kwargs:
             qs = qs.filter(**kwargs)
+
         return qs
     
 
@@ -135,8 +186,19 @@ class BatchService:
 
         return Batch.objects.filter(
             Q(status__icontains=search)
-            | Q(received_date__icontains=search)
+            | (
+                Q(received_date__date=search)
+                if self._is_date(search)
+                else Q()
+            )
         )
+
+    def _is_date(self, value: str) -> bool:
+        try:
+            datetime.fromisoformat(value)
+            return True
+        except Exception:
+            return False
 
 
     def publish(self, batch_id: int, all: bool = True) -> bool:
@@ -147,23 +209,54 @@ class BatchService:
         Updates the batch status accordingly.
         """
 
-        batch = Batch.objects.get(id=batch_id)
-        if batch.status == BatchStatus.PUBLISHED:
-            raise ValueError("This batch is already published and cannot be republished.")
+        batch = self._get_valid_batch(batch_id)
+        passports = self._get_batch_passports(batch)
+        to_publish = self._determine_publish_scope(passports, all)
 
-        passports = Passport.objects.filter(batch=batch)
-        if not passports.exists():
-            raise ValueError("No passports found in this batch.")
-
-        to_publish = passports if all else passports.filter(status=PassportStatus.COMPLETED)
         if not to_publish.exists():
             return False
 
-        updated_count = to_publish.update(status=PassportStatus.PUBLISHED)
-
-        total = passports.count()
-        published_count = passports.filter(status=PassportStatus.PUBLISHED).count()
-        batch.status = BatchStatus.PUBLISHED if published_count == total and total > 0 else BatchStatus.PROCESSING
-        batch.save()
+        updated_count = to_publish.update(status=PassportStatus.PUBLISHED.value)
+        self._sync_batch_status(batch, passports)
 
         return updated_count > 0
+    
+    
+    def get_passports(self, batch_id: int, **filters) -> QuerySet[Passport]:
+        """
+        Retourne tous les passeports d'un batch donné avec des filtres optionnels.
+        """
+        batch = Batch.objects.get(id=batch_id)
+        passports = self._get_batch_passports(batch)
+        if filters:
+            passports = passports.filter(**filters)
+        return passports
+
+
+    def _get_batch_passports(self, batch: Batch) -> QuerySet[Passport]:
+        """
+        Return all passports belonging to the given batch.
+        Raise ValueError If the batch contains no passports.
+        """
+        passports = Passport.objects.filter(batch=batch)
+
+        if not passports.exists():
+            raise ValueError("No passports found in this batch.")
+
+        return passports
+
+
+    def _determine_publish_scope(
+        self, 
+        passports: QuerySet[Passport], 
+        all: bool
+    ) -> QuerySet[Passport]:
+        """
+        Determine which passports should be published.
+        Return a queryset that contains passports that match 
+        the chosen publication scope.
+        """
+        if all:
+            return passports
+        return passports.filter(status=PassportStatus.COMPLETED.value)
+

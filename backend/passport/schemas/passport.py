@@ -146,3 +146,8 @@ class PassportStatusUpdateSchema(Schema):
     """
     status: PassportStatus
 
+
+
+class StatusUpdateSchema(Schema):
+    status: str
+

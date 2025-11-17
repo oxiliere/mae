@@ -9,3 +9,4 @@ class PassportNotFound(APIException):
 class PassportConflict(APIException):
     status_code = 400
     default_detail = "Invalid passport data"
+

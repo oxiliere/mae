@@ -1,291 +1,278 @@
-from django.db import IntegrityError
 from django.http import HttpRequest
-from ninja import Schema
-from ninja.errors import HttpError
+from django.db import IntegrityError
+from django.contrib.auth import get_user_model
+from injector import inject
 from ninja_extra import (
-    ControllerBase,
-    api_controller, http_delete, 
-    http_get, http_post, http_put
-)
-from ninja_extra.pagination import (
-    paginate, PageNumberPaginationExtra, PaginatedResponseSchema
+    api_controller, 
+    http_get, 
+    http_post, 
+    http_put, 
+    http_delete
 )
 from ninja_extra.permissions import IsAuthenticated
-from injector import inject
-from uuid import UUID
-from typing import Optional
-
+from ninja_extra.pagination import (
+    paginate, 
+    PageNumberPaginationExtra, 
+    PaginatedResponseSchema
+)
+from organisations.services import OrganizationService
+from organisations.models import Organization
 from organisations.schemas import (
     OrganizationSchema,
     OrganizationCreateSchema,
     OrganizationDetailSchema,
     OrganizationUserSchema,
-    PasswordSchema,
-)
-from organisations.services import OrganizationService
-from organisations.exceptions import OrganizationError, OrganizationAccessError
-from organisations.models import Organization
-from organisations.permissions import (
-    IsOrganizationOwner,
-    IsOrganizationAdmin,
-    IsOrganizationMember,
-    isTargetUser,
+    AddUserSchema,
 )
 from utils_mixins.schemas import MessageSchema
-#from jwt_allauth.utils import load_user
+from organisations.permissions import (
+    IsOrganizationOwner,
+    IsOrganizationMember,
+    IsOrganizationAdmin,
+)
+from organisations.exceptions import (
+    OrganizationError, 
+    OrganizationAccessError
+)
+from django.db.models import Q
 
 
-class AddUserSchema(Schema):
-    email: str
-    is_admin: Optional[bool] = True
+
+User = get_user_model()
 
 
+@api_controller(
+    "/organizations",
+    tags=["Organizations"],
+    permissions=[IsAuthenticated],
+)
+class OrganizationController:
+    """
+    Controller to manage organizations: CRUD operations 
+    and activation/deactivation.
+    """
 
-@api_controller("/organizations", tags=['Organizations'], permissions=[
-    IsAuthenticated
-])
-class OrganizationController(ControllerBase):
     @inject
-    def __init__(self, org_service: OrganizationService):
-        self.org_service = org_service
-    
-    @http_get("", response=PaginatedResponseSchema[OrganizationSchema])
+    def __init__(self, service: OrganizationService):
+        """Inject the OrganizationService to handle business logic."""
+        self.service = service
+
+
+    @http_get(
+        "", 
+        response=PaginatedResponseSchema[OrganizationSchema]
+    )
     @paginate(PageNumberPaginationExtra, page_size=20)
-    def list_organizations(self, request: HttpRequest):
-        """List user's organizations"""
-        print(request.user)
-        return self.org_service.user_organizations(request.user.id)
-    
-    @http_post("", response={201: OrganizationDetailSchema, 400: MessageSchema})
-    #@load_user
-    def create_organization(self, request: HttpRequest, data: OrganizationCreateSchema):
-        """Create a new organization"""
+    def list(self, request: HttpRequest):
+        """List all organizations where the authenticated user is a member."""
+        return self.service.user_organizations(request.user.id)
+
+
+    @http_post(
+        "", 
+        response={201: OrganizationDetailSchema, 400: MessageSchema}
+    )
+    def create(self, request: HttpRequest, data: OrganizationCreateSchema):
+        """Create a new organization and assign the requesting user as owner."""
+
         try:
-            organization = self.org_service.create_organization(
-                user=request.user,
-                **data.dict()
-            )
-            return 201, organization
+            org = self.service.create_organization(request.user, **data.dict())
+            return 201, org
         except IntegrityError:
             return 400, MessageSchema(detail="Organization with this name already exists")
-        except Exception as e:
-            return 400, MessageSchema(detail=str(e))
-    
+
+
     @http_get(
-        "/{organization_id}", 
+        "/{slug}",
         response={200: OrganizationDetailSchema, 404: MessageSchema},
-        permissions=[IsAuthenticated & IsOrganizationMember()]
+        permissions=[IsOrganizationMember()],
     )
-    def get_organization(self, request: HttpRequest, organization_id: str):
-        """Get organization details"""
+    def retrieve(self, request, slug: str):
+        """Retrieve details of a specific organization by its slug."""
+
         try:
-            organization = Organization.objects.get(slug=organization_id, is_active=True)
-            # Check if user has access to this organization
-            if not self.org_service.get_organization_user(organization, request.user):
+            org = Organization.objects.get(slug=slug, is_active=True)
+            if not self.service.get_organization_user(org, request.user):
                 return 404, MessageSchema(detail="Organization not found")
-            return 200, organization
+            return 200, org
         except Organization.DoesNotExist:
             return 404, MessageSchema(detail="Organization not found")
-    
-    @http_get(
-        "/check_id/{slug}", 
-        response={200: MessageSchema, 404: MessageSchema},
-        permissions=[IsAuthenticated]
-    )
-    def check_slug(self, request: HttpRequest, slug: str):
-        """Check if organization slug (slug) is available"""
-        try:
-            # Check if organization with this slug exists
-            organization = Organization.objects.filter(slug=slug, is_active=True).first()
-            if organization:
-                return 200, MessageSchema(detail="Slug is already taken")
-            else:
-                return 404, MessageSchema(detail="Slug is available")
-        except Exception as e:
-            return 404, MessageSchema(detail="Slug is available")
 
 
     @http_put(
-        "/{organization_id}", 
-        response={200: OrganizationDetailSchema, 404: MessageSchema, 403: MessageSchema},
-        permissions=[IsAuthenticated & IsOrganizationOwner()]
+        "/{org_id}",
+        response={200: OrganizationDetailSchema, 404: MessageSchema},
+        permissions=[IsOrganizationOwner()],
     )
-    def update_organization(self, request: HttpRequest, organization_id: str, data: OrganizationCreateSchema):
-        """Update organization details"""
+    def update(self, request, org_id: str, data):
+        """Update an existing organization's details. Only owners can update."""
         try:
-            organization = Organization.objects.get(id=organization_id, is_active=True)
-            
-            # Check if user can manage organization
-            if not self.org_service.user_can_manage_organization(organization, request.user):
-                return 403, MessageSchema(detail="Permission denied")
-            
-            updated_org = self.org_service.update_organization(organization, **data.dict(exclude_unset=True))
-            return 200, updated_org
+            org = Organization.objects.get(id=org_id, is_active=True)
+            updated = self.service.update_organization(org, **data.dict(exclude_unset=True))
+            return 200, updated
         except Organization.DoesNotExist:
             return 404, MessageSchema(detail="Organization not found")
-    
+
+
     @http_delete(
-        "/{organization_id}", 
-        response={200: MessageSchema, 404: MessageSchema, 403: MessageSchema},
-        permissions=[IsAuthenticated & IsOrganizationOwner()]
+        "/{org_id}",
+        response={200: MessageSchema, 404: MessageSchema},
+        permissions=[IsOrganizationOwner()],
     )
-    def delete_organization(self, request: HttpRequest, organization_id: str):
-        """Delete organization"""
+    def delete(self, request, org_id: str):
+        """Delete an organization. Only owners can delete."""
         try:
-            organization = Organization.objects.get(id=organization_id, is_active=True)
-            
-            # Check if user is owner
-            if not self.org_service.is_organization_owner(organization, request.user):
-                return 403, MessageSchema(detail="Only organization owner can delete organization")
-            
-            self.org_service.delete_organization(organization)
+            org = Organization.objects.get(id=org_id, is_active=True)
+            self.service.delete_organization(org)
             return 200, MessageSchema(detail="Organization deleted successfully")
         except Organization.DoesNotExist:
             return 404, MessageSchema(detail="Organization not found")
-    
-    # Organization Users Management
+
+
+    @http_post(
+        "/{org_id}/activate",
+        response={200: MessageSchema, 403: MessageSchema, 404: MessageSchema},
+        permissions=[IsOrganizationOwner()],
+    )
+    def activate(self, request, org_id: str):
+        """Activate an organization. Only owners can activate."""
+        try:
+            org = Organization.objects.get(id=org_id)
+            self.service.active_organization(org, request.user, is_active=True)
+            return 200, MessageSchema(detail="Organization activated")
+        except Organization.DoesNotExist:
+            return 404, MessageSchema(detail="Organization not found")
+        except (OrganizationError, OrganizationAccessError) as e:
+            return 403, MessageSchema(detail=str(e))
+
+
+    @http_post(
+        "/{org_id}/deactivate",
+        response={200: MessageSchema, 403: MessageSchema, 404: MessageSchema},
+        permissions=[IsOrganizationOwner()],
+    )
+    def deactivate(self, request, org_id: str):
+        """Deactivate an organization. Only owners can deactivate."""
+        try:
+            org = Organization.objects.get(id=org_id, is_active=True)
+            self.service.active_organization(org, request.user, is_active=False)
+            return 200, MessageSchema(detail="Organization deactivated")
+        except Organization.DoesNotExist:
+            return 404, MessageSchema(detail="Organization not found")
+        except (OrganizationError, OrganizationAccessError) as e:
+            return 403, MessageSchema(detail=str(e))
+
+
+
+@api_controller(
+    "/organizations/{org_id}/users",
+    tags=["Organization Users"],
+    permissions=[IsAuthenticated],
+)
+class OrganizationUsersController:
+    """Controller to manage users within an organization: list, add, remove."""
+
+    @inject
+    def __init__(self, service: OrganizationService):
+        """Inject the OrganizationService to handle user-related business logic."""
+
+        self.service = service
+
+
     @http_get(
-        "/{organization_id}/users", 
-        url_name="list_organization_users",
+        "",
         response=PaginatedResponseSchema[OrganizationUserSchema],
-        permissions=[IsAuthenticated & IsOrganizationMember()]
+        permissions=[IsOrganizationMember()],
     )
     @paginate(PageNumberPaginationExtra, page_size=50)
-    def list_organization_users(self, request: HttpRequest, organization_id: str):
-        """List organization users"""
+    def list(self, request, org_id: str):
+        """List all users in the organization."""
+
         try:
-            organization = Organization.objects.get(id=organization_id, is_active=True)
-            
-            # Check if user has access to this organization
-            if not self.org_service.get_organization_user(organization, request.user):
-                return []
-            
-            return self.org_service.organization_users(organization)
+            org = Organization.objects.get(id=org_id, is_active=True)
+            return self.service.organization_users(org)
         except Organization.DoesNotExist:
             return []
-    
+
+
     @http_post(
-        "/{organization_id}/users", 
-        url_name="add_organization_user",
-        response={
-            201: MessageSchema, 
-            400: MessageSchema, 
-            403: MessageSchema, 
-            404: MessageSchema
-        },
-        permissions=[IsAuthenticated & IsOrganizationAdmin()]
+        "",
+        response={201: MessageSchema, 403: MessageSchema, 404: MessageSchema},
+        permissions=[IsOrganizationAdmin()],
     )
-    def add_organization_user(self, request: HttpRequest, organization_id: str, data: AddUserSchema):
-        """Add user to organization"""
+    def add(self, request, org_id: str, data: AddUserSchema):
+        """Add a new user to the organization. Only admins can add users."""
+
         try:
-            organization = Organization.objects.get(id=organization_id, is_active=True)
-            
-            # Check if user can invite users
-            if not self.org_service.is_admin_user(organization, request.user):
+            org = Organization.objects.get(id=org_id, is_active=True)
+
+            if not self.service.is_admin_user(org, request.user):
                 return 403, MessageSchema(detail="Permission denied")
-            
-            self.org_service.add_organization_user(
-                organization=organization,
+
+            self.service.add_organization_user(
+                organization=org,
                 email=data.email,
                 is_admin=data.is_admin,
-                sender=request.user
+                sender=request.user,
             )
-            return 201, MessageSchema(detail="User added to organization successfully")
+            return 201, MessageSchema(detail="User added successfully")
+
         except Organization.DoesNotExist:
             return 404, MessageSchema(detail="Organization not found")
-        # except Exception as e:
-        #     return 400, MessageSchema(detail=str(e))
-    
+
+
     @http_delete(
-        "/{organization_id}/users/{user_id}", 
-        response={200: MessageSchema, 404: MessageSchema, 403: MessageSchema},
-        permissions=[IsAuthenticated & IsOrganizationAdmin()]
+        "/{user_id}",
+        response={200: MessageSchema, 403: MessageSchema, 404: MessageSchema},
+        permissions=[IsOrganizationAdmin()],
     )
-    def remove_organization_user(self, request: HttpRequest, organization_id: str, user_id: UUID):
-        """Remove user from organization"""
+    def remove(self, request, org_id: str, user_id):
+        """Remove a user from the organization. Only admins can remove users."""
+
         try:
-            organization = Organization.objects.get(id=organization_id, is_active=True)
-            
-            # Check if user can manage users
-            if not self.org_service.user_can_manage_organization(organization, request.user):
+            org = Organization.objects.get(id=org_id, is_active=True)
+
+            if not self.service.user_can_manage_organization(org, request.user):
                 return 403, MessageSchema(detail="Permission denied")
-            
-            from django.contrib.auth import get_user_model
-            User = get_user_model()
-            target_user = User.objects.get(id=user_id)
-            
-            # Prevent removing organization owner
-            if self.org_service.is_organization_owner(organization, target_user):
+
+            target_user = User.objects.get(pk=user_id)
+
+            if self.service.is_organization_owner(org, target_user):
                 return 403, MessageSchema(detail="Cannot remove organization owner")
-            
-            success = self.org_service.remove_organization_user(organization, target_user)
-            if success:
-                return 200, MessageSchema(detail="User removed from organization successfully")
-            else:
-                return 404, MessageSchema(detail="User not found in organization")
-        except Organization.DoesNotExist:
-            return 404, MessageSchema(detail="Organization not found")
-    
 
-    @http_post(
-        "/{organization_id}/activate", 
-        response={
-            200: MessageSchema, 
-            404: MessageSchema, 
-            403: MessageSchema
-        },
-        permissions=[IsAuthenticated & IsOrganizationOwner()]
-    )
-    def activate_organization(self, request: HttpRequest, organization_id: str):
-        """Activate organization"""
-        try:
-            organization = Organization.objects.get(id=organization_id)
-            
-            self.org_service.active_organization(organization, request.user, is_active=True)
-            return 200, MessageSchema(detail="Organization activated successfully")
-        except Organization.DoesNotExist:
-            return 404, MessageSchema(detail="Organization not found")
-        except (OrganizationError, OrganizationAccessError) as e:
-            return 403, MessageSchema(detail=str(e))
-    
-    @http_post(
-        "/{organization_id}/deactivate", 
-        response={
-            200: MessageSchema, 
-            404: MessageSchema, 
-            403: MessageSchema
-        },
-        permissions=[IsAuthenticated & IsOrganizationOwner()]
-    )
-    def deactivate_organization(self, request: HttpRequest, organization_id: str):
-        """Deactivate organization"""
-        try:
-            organization = Organization.objects.get(id=organization_id, is_active=True)
-            
-            self.org_service.active_organization(organization, request.user, is_active=False)
-            return 200, MessageSchema(detail="Organization deactivated successfully")
-        except Organization.DoesNotExist:
-            return 404, MessageSchema(detail="Organization not found")
-        except (OrganizationError, OrganizationAccessError) as e:
-            return 403, MessageSchema(detail=str(e))
+            removed = self.service.remove_organization_user(org, target_user)
 
-    @http_post(
-        "/register/<uuid:user_id>/<str:token>",
-        response={
-            200: MessageSchema,
-            403: MessageSchema
-        },
-        permissions=[IsAuthenticated & isTargetUser],
-        url_name="user_register"
+            if removed:
+                return 200, MessageSchema(detail="User removed successfully")
+            return 404, MessageSchema(detail="User not found")
+
+        except Organization.DoesNotExist:
+            return 404, MessageSchema(detail="Organization not found")
+
+
+
+    @http_get(
+        "/search",
+        response=PaginatedResponseSchema[OrganizationUserSchema],
+        permissions=[IsOrganizationMember()],
     )
-    def user_register(self, request: HttpRequest, user_id: UUID, token: str, payload: PasswordSchema):
-        if not payload.password == payload.password1:
-            raise HttpError(
-                status_code=400,
-                message="Le mot de passe ne correspond pas"
-            )
+    @paginate(PageNumberPaginationExtra, page_size=50)
+    def search(self, request, org_id: str, query: str = ""):
+        """Search users in an organization by name or email."""
+
         try:
-            self.org_service.activate_registration(user_id, token, payload.password)
-            return 200, MessageSchema(detail="Registered successfully.")
-        except (OrganizationError, OrganizationAccessError) as e:
-            return 403, MessageSchema(detail=str(e))
+            org = Organization.objects.get(id=org_id, is_active=True)
+
+            users_qs = self.service.organization_users(org)
+
+            if query:
+                # Filter users by username or email containing the query string
+                users_qs = users_qs.filter(
+                    Q(user__username__icontains=query) |
+                    Q(user__email__icontains=query)
+                )
+
+            return users_qs
+
+        except Organization.DoesNotExist:
+            return []
