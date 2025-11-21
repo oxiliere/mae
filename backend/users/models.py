@@ -17,12 +17,11 @@ from utils_mixins.models import (
 
 
 class UserManager(BaseUserManager):
-    """
-    Gestionnaire personnalisé pour le modèle User
-    """
+    """Personalized scheduler for user model"""
+
     def create_user(self, email, password=None, **extra_fields):
         """
-        Crée et sauvegarde un utilisateur avec l'email et le mot de passe donnés.
+        Create and save the user with given email and password
         """
 
         if not email:
@@ -34,9 +33,7 @@ class UserManager(BaseUserManager):
         return user
 
     def create_superuser(self, email, password=None, **extra_fields):
-        """
-        Crée et sauvegarde un superutilisateur avec l'email et le mot de passe donnés.
-        """
+        """Create and save the superuser with email and password given"""
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('is_active', True)
@@ -47,9 +44,10 @@ class UserManager(BaseUserManager):
 
 class User(AbstractUser, SafeDeleteModel, BaseModelMixin):
     """
-    Modèle d'utilisateur personnalisé qui utilise l'email comme identifiant unique
-    et intègre la suppression sécurisée (soft delete)
+    Personalized user model that use email as unique identifiant and 
+    integrate safe delete (soft delete)
     """
+
     _safedelete_policy = SOFT_DELETE_CASCADE
     
     username = None
@@ -93,7 +91,9 @@ class User(AbstractUser, SafeDeleteModel, BaseModelMixin):
     
     objects = UserManager()
     
+
     class Meta:
+        
         verbose_name = _('utilisateur')
         verbose_name_plural = _('utilisateurs')
         ordering = ['-created_at']
@@ -104,18 +104,18 @@ class User(AbstractUser, SafeDeleteModel, BaseModelMixin):
     
     def get_full_name(self):
         """
-        Retourne le prénom et le nom de l'utilisateur avec un espace entre les deux.
+        Return the first name and the last name of user 
+        separates by space
         """
         full_name = f'{self.first_name} {self.last_name}'
         return full_name.strip()
     
+
     def get_short_name(self):
-        """
-        Retourne le prénom de l'utilisateur.
-        """
+        """Return the firt name of user"""
         return self.first_name
 
 
 
-# Enregistrement des modèles pour l'audit logging
+# Register models for audit logging
 auditlog.register(User)

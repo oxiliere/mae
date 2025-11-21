@@ -185,14 +185,29 @@ class OrganizationUsersController:
         permissions=[IsOrganizationMember()],
     )
     @paginate(PageNumberPaginationExtra, page_size=50)
-    def list(self, request, org_id: str):
-        """List all users in the organization."""
+    def list_or_search(self, request, org_id: str, query: str = ""):
+        """
+        List or search users in the organization.
+        If `query` is provided → search mode.
+        If not → full list.
+        """
 
         try:
             org = Organization.objects.get(id=org_id, is_active=True)
-            return self.service.organization_users(org)
+            users_qs = self.service.organization_users(org)
+
+            # Si un paramètre ?query= est présent → filtrage
+            if query:
+                users_qs = users_qs.filter(
+                    Q(user__username__icontains=query) |
+                    Q(user__email__icontains=query)
+                )
+
+            return users_qs
+
         except Organization.DoesNotExist:
             return []
+
 
 
     @http_post(
@@ -249,30 +264,3 @@ class OrganizationUsersController:
         except Organization.DoesNotExist:
             return 404, MessageSchema(detail="Organization not found")
 
-
-
-    @http_get(
-        "/search",
-        response=PaginatedResponseSchema[OrganizationUserSchema],
-        permissions=[IsOrganizationMember()],
-    )
-    @paginate(PageNumberPaginationExtra, page_size=50)
-    def search(self, request, org_id: str, query: str = ""):
-        """Search users in an organization by name or email."""
-
-        try:
-            org = Organization.objects.get(id=org_id, is_active=True)
-
-            users_qs = self.service.organization_users(org)
-
-            if query:
-                # Filter users by username or email containing the query string
-                users_qs = users_qs.filter(
-                    Q(user__username__icontains=query) |
-                    Q(user__email__icontains=query)
-                )
-
-            return users_qs
-
-        except Organization.DoesNotExist:
-            return []

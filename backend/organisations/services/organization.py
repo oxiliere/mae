@@ -143,20 +143,37 @@ class OrganizationService:
 
         return get_organization_user(**kwargs)
 
-    
+
     def user_can_manage_organization(self, organization: Organization, user) -> bool:
         """Check if the user can manage the organization members."""
 
         org_user = self.get_organization_user(organization, user)
-        # Owners can manage members too
-        return org_user.is_admin if org_user else False or self.is_organization_owner(organization, user)
+
+        # It's the admin of organization ?
+        is_admin = False
+        if org_user:
+            is_admin = org_user.is_admin
+
+        # The owner can also manage the members
+        is_owner = self.is_organization_owner(organization, user)
+
+        return is_admin or is_owner
 
 
     def is_admin_user(self, organization: Organization, user) -> bool:
         """Check if the user has admin rights. Owners are treated as admins."""
-        
+
         org_user = self.get_organization_user(organization, user)
-        return (org_user.is_admin if org_user else False) or self.is_organization_owner(organization, user)
+
+        # flag admin going out from relation org_user
+        is_admin = False
+        if org_user:
+            is_admin = org_user.is_admin
+
+        # An owner est take as admin
+        is_owner = self.is_organization_owner(organization, user)
+
+        return is_admin or is_owner
 
 
     def get_organization_by_slug(self, slug: str, **kwargs) -> Optional[Organization]:
@@ -187,11 +204,15 @@ class OrganizationService:
     
 
     def delete_organization(self, organization: Organization) -> bool:
+        """Delete organization"""
+
         organization.delete()
         return True
     
 
     def is_organization_owner(self, organization, user, raise_exception=False):
+        "Check if user is the owner of organization"
+
         is_owner = organization.owner.organization_user == user
 
         if not is_owner and raise_exception:
@@ -220,15 +241,26 @@ class OrganizationService:
     # --- Invitations & Registration ---
 
     def accept_invitation(self, user_id, token, password):
+        """Accept the invitation of user"""
+        
         invitation_backend().activate_view(user_id, token, password)
 
+
     def activate_registration(self, user_id, token, password):
+        """Active the registration of user"""
+        
         registration_backend().activate_view(user_id, token, password)
 
+
     def remind_invitation(self, user_id, organization, sender=None):
+        "Remind user of the invitation"
+        
         user = self.get_organization_user(organization, user_id)
         invitation_backend().send_reminder(user, sender=sender)
 
+
     def remind_registration(self, user_id, organization, sender=None):
+        "Remind user for the registration"
+
         user = self.get_organization_user(organization, user_id)
         registration_backend().send_reminder(user, sender=sender)

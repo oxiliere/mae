@@ -16,6 +16,7 @@ dependencies = [
     "django-ninja-jwt>=5.4.0",
     "django-organizations>=2.5.0",
     "django-safedelete>=1.4.1",
+    "django-unfold>=0.71.0",
     "psycopg[binary]>=3.2.12",
     "pydantic[email]>=2.12.4",
     "python-dotenv>=1.2.1",

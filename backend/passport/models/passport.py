@@ -30,11 +30,11 @@ class Batch(SafeDeleteModel, BaseModelMixin):
         help_text="Status of the batch",
         default=BatchStatus.PENDING.value,
         choices=(
-            (BatchStatus.PENDING.value, _('Pending')),
-            (BatchStatus.RECEIVED.value, _('Received')),
-            (BatchStatus.PROCESSING.value, _('Processing')),
-            (BatchStatus.COMPLETED.value, _('Completed')),
-            (BatchStatus.PUBLISHED.value, _('Published')),
+            (BatchStatus.PENDING.value, _('En attente')),
+            (BatchStatus.RECEIVED.value, _('Reçu')),
+            (BatchStatus.PROCESSING.value, _('En traitement')),
+            (BatchStatus.COMPLETED.value, _('Terminé')),
+            (BatchStatus.PUBLISHED.value, _('Publié')),
         )
     )
     organization = models.ForeignKey(
@@ -44,6 +44,12 @@ class Batch(SafeDeleteModel, BaseModelMixin):
         related_name="batches",
         help_text="The organization this batch belongs to",
     )
+
+
+    class Meta:
+        
+        verbose_name = _("Lot des passports")
+        verbose_name_plural = _("Lots des passports")
 
 
     def set_organization(self, organization_id: int):
@@ -135,11 +141,11 @@ class Passport(SafeDeleteModel, BaseModelMixin):
         help_text="Status of the passport",
         default=PassportStatus.DRAFT.value,
         choices=(
-            (PassportStatus.PUBLISHED.value, _('Published')),
-            (PassportStatus.DRAFT.value, _('Draft')),
-            (PassportStatus.COMPLETED.value, _('Completed')),
-            (PassportStatus.LOST.value, _('Lost')),
-            (PassportStatus.TAKEN.value, _('Taken')),
+            (PassportStatus.PUBLISHED.value, _('Publié')),
+            (PassportStatus.DRAFT.value, _('Brouillon')),
+            (PassportStatus.COMPLETED.value, _('Terminé')),
+            (PassportStatus.LOST.value, _('Perdu')),
+            (PassportStatus.TAKEN.value, _('Retiré')),
         )
     )
     published_at = models.DateTimeField(
@@ -152,6 +158,12 @@ class Passport(SafeDeleteModel, BaseModelMixin):
         null=True,
         help_text="Date when the passport was taken",
     )
+
+
+    class Meta:
+        
+        verbose_name = _('Passport')
+        verbose_name_plural = _('Passports')
 
 
     def __str__(self):

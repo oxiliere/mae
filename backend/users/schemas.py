@@ -1,10 +1,7 @@
 from typing import Optional
 from uuid import UUID
-from ninja import Schema, ModelSchema
-from users.models import User
+from ninja import Schema
 from utils_mixins.types import EmailApiType
-from pydantic import field_validator
-from utils_mixins.utils import get_absolute_url
 
 
 
