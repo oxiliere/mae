@@ -51,20 +51,24 @@ class User(AbstractUser, SafeDeleteModel, BaseModelMixin):
     _safedelete_policy = SOFT_DELETE_CASCADE
     
     username = None
-    role = models.PositiveSmallIntegerField(null=False, default=0)
+    role = models.PositiveSmallIntegerField(
+        _("Rôle"),
+        null=False, 
+        default=0
+    )
     email = models.EmailField(
-        _('adresse email'),
+        _('Adresse email'),
         unique=True,
         validators=[EmailValidator()]
     )
     
     phone_number = models.CharField(
-        _('numéro de téléphone'), 
+        _('Numéro de téléphone'), 
         max_length=15, blank=True, null=True,
     )
 
     language = models.CharField(
-        _('langue'),
+        _('Langue'),
         max_length=10,
         default='fr',
         choices=[
@@ -94,8 +98,8 @@ class User(AbstractUser, SafeDeleteModel, BaseModelMixin):
 
     class Meta:
         
-        verbose_name = _('utilisateur')
-        verbose_name_plural = _('utilisateurs')
+        verbose_name = _('Utilisateur')
+        verbose_name_plural = _('Utilisateurs')
         ordering = ['-created_at']
 
     

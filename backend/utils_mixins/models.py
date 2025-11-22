@@ -1,6 +1,7 @@
 import uuid
 from django.db import models
 from django.conf import settings
+from django.utils.translation import gettext_lazy as _
 
 
 class UUIDPrimaryKeyMixin(models.Model):
@@ -19,10 +20,12 @@ class UUIDPrimaryKeyMixin(models.Model):
 class TimestampMixin(models.Model):
     """Mixin that provides created_at and updated_at timestamp fields."""
     created_at = models.DateTimeField(
+        _("Date de creation"),
         auto_now_add=True,
         help_text="Date and time when this record was created"
     )
     updated_at = models.DateTimeField(
+        _("Date de modification"),
         auto_now=True,
         help_text="Date and time when this record was last updated"
     )
@@ -39,7 +42,8 @@ class UserTrackingMixin(models.Model):
         null=True,
         blank=True,
         related_name="%(app_label)s_%(class)s_created",
-        help_text="User who created this record"
+        help_text="User who created this record",
+        verbose_name=_("Créateur"),
     )
     updated_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -47,7 +51,8 @@ class UserTrackingMixin(models.Model):
         null=True,
         blank=True,
         related_name="%(app_label)s_%(class)s_updated",
-        help_text="User who last updated this record"
+        help_text="User who last updated this record",
+        verbose_name=_("Modificateur"),
     )
 
     class Meta:
@@ -59,7 +64,7 @@ class SlugMixin(models.Model):
     slug = models.SlugField(
         max_length=255,
         unique=True,
-        help_text="URL-friendly version of the name"
+        help_text=_("URL-friendly version of the name")
     )
 
     class Meta:
@@ -69,12 +74,14 @@ class SlugMixin(models.Model):
 class NameMixin(models.Model):
     """Mixin that provides name and description fields."""
     name = models.CharField(
+        _('Nom'),
         max_length=255,
-        help_text="Name of this record"
+        help_text=_("Name of this record")
     )
     description = models.TextField(
+        _('Description'),
         blank=True,
-        help_text="Optional description"
+        help_text=_("Optional description")
     )
 
     class Meta:
@@ -87,8 +94,9 @@ class NameMixin(models.Model):
 class ActiveMixin(models.Model):
     """Mixin that provides an active/inactive status field."""
     is_active = models.BooleanField(
+        _('Est actif'),
         default=True,
-        help_text="Whether this record is active"
+        help_text=_("Whether this record is active")
     )
 
     class Meta:
@@ -98,8 +106,9 @@ class ActiveMixin(models.Model):
 class OrderingMixin(models.Model):
     """Mixin that provides an ordering field."""
     order = models.PositiveIntegerField(
+        _('Ordre du tri'),
         default=0,
-        help_text="Order for sorting records"
+        help_text=_("Order for sorting records")
     )
 
     class Meta:

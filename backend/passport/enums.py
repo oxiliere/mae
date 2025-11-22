@@ -18,3 +18,8 @@ class BatchStatus(str, Enum):
     COMPLETED = "completed"     # All passports have been processed and are ready for distribution
     PUBLISHED = "published"     # Publish the passports that are completed
 
+
+class GenderStatus(str, Enum):
+
+    MALE = "male"               # User identifies as male
+    FEMALE = "female"           # User identifies as female

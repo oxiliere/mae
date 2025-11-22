@@ -21,14 +21,26 @@ from organisations.enums import  TimeZoneEnum
 
 class Organization(AbstractOrganization, SafeDeleteModel, UUIDPrimaryKeyMixin):
     """Core organization model"""
+
     _safedelete_policy = SOFT_DELETE_CASCADE
 
     # Organization details
-    description = models.TextField(_('description'), blank=True, help_text=_('Description détaillée de l\'organisation'))
-    email = models.EmailField(_('email'), blank=True, null=True, help_text=_('Email de contact principal'))
+    description = models.TextField(
+        _('description'), 
+        blank=True, 
+        help_text=_('Description détaillée de l\'organisation')
+    )
+    email = models.EmailField(
+        _('dmail'), 
+        blank=True, 
+        null=True, 
+        help_text=_('Email de contact principal')
+    )
     phone = models.CharField(
-        _('phone'), max_length=15,
-        blank=True, null=True, 
+        _('phone'), 
+        max_length=15,
+        blank=True, 
+        null=True, 
         help_text=_('Téléphone contact principal')
     )
 
@@ -69,7 +81,6 @@ class Organization(AbstractOrganization, SafeDeleteModel, UUIDPrimaryKeyMixin):
         )
     )
     
-
     class Meta:
 
         verbose_name = _('Organisation')
@@ -85,7 +96,9 @@ class Organization(AbstractOrganization, SafeDeleteModel, UUIDPrimaryKeyMixin):
         if self.slug:
             # Check uniqueness of slug
             if Organization.objects.filter(slug=self.slug).exclude(pk=self.pk).exists():
-                raise ValidationError({'slug': _('Ce préfixe est déjà utilisé par une autre organisation')})
+                raise ValidationError({
+                    'slug': _('Ce préfixe est déjà utilisé par une autre organisation')
+                })
     
 
     def get_active_users_count(self):
@@ -106,7 +119,9 @@ class Organization(AbstractOrganization, SafeDeleteModel, UUIDPrimaryKeyMixin):
         Returns True is user is an admin in the organization, otherwise false
         """
         return (
-            True if self.organization_users.filter(user__pk=user.pk, is_admin=True) else False
+            True if self.organization_users.filter(
+                user__pk=user.pk, is_admin=True
+            ) else False
         )
 
 
@@ -122,6 +137,10 @@ class Organization(AbstractOrganization, SafeDeleteModel, UUIDPrimaryKeyMixin):
 
 
     def __str__(self):
+        return f"{self.name}"
+
+
+    def __repr__(self):
         return f"{self.name} ({self.slug})"
 
 
@@ -133,20 +152,34 @@ class Organization(AbstractOrganization, SafeDeleteModel, UUIDPrimaryKeyMixin):
 
 
 
-class OrganizationUser(AbstractOrganizationUser, SafeDeleteModel, UUIDPrimaryKeyMixin, ActiveMixin):
+class OrganizationUser(
+    AbstractOrganizationUser, 
+    SafeDeleteModel, 
+    UUIDPrimaryKeyMixin, 
+    ActiveMixin) :
     """Links a user to the organization"""
+
     _safedelete_policy = SOFT_DELETE_CASCADE
     
     # Status and dates
-    joined_at = models.DateTimeField(_('date d\'adhésion'), auto_now_add=True)
-    last_activity = models.DateTimeField(_('dernière activité'), auto_now=True)
+    joined_at = models.DateTimeField(
+        _('date d\'adhésion'), 
+        auto_now_add=True
+    )
+    last_activity = models.DateTimeField(
+        _('dernière activité'), 
+        auto_now=True
+    )
     
     # Notifications preferences
-    email_notifications = models.BooleanField(_('notifications email'), default=True)
+    email_notifications = models.BooleanField(
+        _('notifications email'), 
+        default=True
+    )
     
     class Meta:
-        verbose_name = _('Utilisateur d\'organisation')
-        verbose_name_plural = _('Utilisateurs d\'organisation')
+        verbose_name = _("Utilisateur de l\'organisation")
+        verbose_name_plural = _("Utilisateurs de l'organisation")
         unique_together = ['organization', 'user']
         indexes = [
             models.Index(fields=['joined_at']),

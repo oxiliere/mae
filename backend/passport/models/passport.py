@@ -1,33 +1,43 @@
-from utils_mixins.models import BaseModelMixin
 from django.utils import timezone
+from django.utils.formats import date_format
 from django.db import models
-from passport.enums import PassportStatus, BatchStatus
+from passport.enums import (
+    PassportStatus, 
+    BatchStatus,
+    GenderStatus,
+)
 from django.utils.translation import gettext_lazy as _
 from safedelete.models import SafeDeleteModel, SOFT_DELETE_CASCADE
 from organisations.models.organisations import Organization
 from auditlog.registry import auditlog
+from utils_mixins.models import (
+    UUIDPrimaryKeyMixin, 
+    TimestampMixin,
+)
 
 
 
-class Batch(SafeDeleteModel, BaseModelMixin):
+
+class Batch(SafeDeleteModel, UUIDPrimaryKeyMixin, TimestampMixin):
     """
     Represents a batch of passports.
 
     Attributes:
         received_date: The date this batch was received.
-        status: Current status of the batch (Pending, Received, Processing, Completed, Published).
+        status: Current status of the batch (Pending, Received, Processing, 
+        Completed, Published).
         organization: Organization this batch belongs to.
     """
 
     _safedelete_policy = SOFT_DELETE_CASCADE
 
     received_date = models.DateField(
-        help_text="Date of the batch",
-        default=timezone.now
+        help_text=_("Date of the batch"),
+        default=timezone.now,
+        verbose_name=_("Date de réception"),
     )
     status = models.CharField(
         max_length=50,
-        help_text="Status of the batch",
         default=BatchStatus.PENDING.value,
         choices=(
             (BatchStatus.PENDING.value, _('En attente')),
@@ -35,14 +45,17 @@ class Batch(SafeDeleteModel, BaseModelMixin):
             (BatchStatus.PROCESSING.value, _('En traitement')),
             (BatchStatus.COMPLETED.value, _('Terminé')),
             (BatchStatus.PUBLISHED.value, _('Publié')),
-        )
+        ),
+        verbose_name="Statut",
+        help_text=_("Status of the batch"),
     )
     organization = models.ForeignKey(
         Organization,
         null=True,
         on_delete=models.CASCADE,
         related_name="batches",
-        help_text="The organization this batch belongs to",
+        help_text=_("The organization this batch belongs to"),
+        verbose_name=_("Organization")
     )
 
 
@@ -76,14 +89,13 @@ class Batch(SafeDeleteModel, BaseModelMixin):
 
             
     def __str__(self):
-        """
-        String representation of a batch.
-        """
-        return f"Batch: {self.received_date} - {self.status}"
+        local_date = date_format(self.received_date, format="DATE_FORMAT", use_l10n=True)
+        status_label = self.get_status_display()
+
+        return f"{local_date} – {status_label}"
 
 
-
-class Passport(SafeDeleteModel, BaseModelMixin):
+class Passport(SafeDeleteModel, UUIDPrimaryKeyMixin, TimestampMixin):
     """
     Represents a passport within a batch.
 
@@ -100,45 +112,59 @@ class Passport(SafeDeleteModel, BaseModelMixin):
         taken_at: DateTime when the passport was taken.
     """
 
-    _safedelete_policy = SOFT_DELETE_CASCADE
+    _safedelete_policy = 1
 
     batch = models.ForeignKey(
         Batch,
         on_delete=models.CASCADE,
         related_name="passports",
-        help_text="The batch this passport belongs to",
+        verbose_name=_("Lot"),
+        help_text=_("The batch this passport belongs to"),
     )
     code = models.CharField(
         max_length=100,
         unique=True,
-        help_text="Unique code for the passport",
+        blank=True,
+        verbose_name=_("Code du passport"),
+        help_text=_("Unique code for the passport"),
     )
     coupon_id = models.CharField(
         max_length=100,
         unique=True,
-        help_text="Coupon identifier associated with the passport",
+        blank=True,
+        verbose_name=_("ID du coupon"),
+        help_text=_("Coupon identifier associated with the passport"),
     )
-    first_name = models.CharField(
+    last_name = models.CharField(
         max_length=100,
-        help_text="First name of the passport holder",
-    )
+        verbose_name=_("Nom"),
+        help_text=_("Last name of the passport holder"),
+    )    
     middle_name = models.CharField(
         max_length=100,
         blank=True,
         null=True,
-        help_text="Middle name of the passport holder",
+        verbose_name=_("Postnom"),
+        help_text=_("Middle name of the passport holder"),
     )
-    last_name = models.CharField(
+    first_name = models.CharField(
         max_length=100,
-        help_text="Last name of the passport holder",
+        verbose_name=_("Prénom"),
+        help_text=_("First name of the passport holder"),
     )
     gender = models.CharField(
         max_length=10,
-        help_text="Gender of the passport holder",
+        verbose_name=_("Genre"),
+        choices=(
+            (GenderStatus.MALE.value, _("Homme")),
+            (GenderStatus.FEMALE.value, _("Femme")),
+        ),  
+        help_text=_("Gender of the passport holder"),
     )
     status = models.CharField(
         max_length=50,
-        help_text="Status of the passport",
+        verbose_name=_("Statut"),
+        help_text=_("Status of the passport"),
         default=PassportStatus.DRAFT.value,
         choices=(
             (PassportStatus.PUBLISHED.value, _('Publié')),
@@ -148,15 +174,17 @@ class Passport(SafeDeleteModel, BaseModelMixin):
             (PassportStatus.TAKEN.value, _('Retiré')),
         )
     )
-    published_at = models.DateTimeField(
+    published_at = models.DateField(
         blank=True,
         null=True,
-        help_text="Publication date of the passport",
+        verbose_name=_("Date de publication"),
+        help_text=_("Publication date of the passport"),
     )
-    taken_at = models.DateTimeField(
+    taken_at = models.DateField(
         blank=True,
         null=True,
-        help_text="Date when the passport was taken",
+        verbose_name=_("Date de retrait"),
+        help_text=_("Date when the passport was taken"),
     )
 
 
@@ -167,12 +195,7 @@ class Passport(SafeDeleteModel, BaseModelMixin):
 
 
     def __str__(self):
-        """
-        String representation of a passport.
-        """
-        return f"Passport {self.code} for {self.first_name} \
-                 {self.last_name} (Batch: {self.batch.received_date})"
-
+        return f"Passport {self.code} for {self.first_name} {self.last_name} (Batch: {self.batch.received_date})"
 
 
 auditlog.register(Batch)

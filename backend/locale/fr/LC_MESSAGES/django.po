@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-21 16:48+0200\n"
+"POT-Creation-Date: 2025-11-22 08:08-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,189 +18,324 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
+#: organisations/admin.py:63 users/models.py:101
+msgid "Utilisateur"
+msgstr "Utilisateur"
+
+#: organisations/admin.py:69 organisations/models/organisations.py:86
+msgid "Organisation"
+msgstr "Organisation"
+
+#: organisations/admin.py:74 organisations/admin.py:81
+msgid "Oui"
+msgstr "Oui"
+
+#: organisations/admin.py:74 organisations/admin.py:81
+msgid "Non"
+msgstr "Non"
+
+#: organisations/admin.py:75
+msgid "Administrateur"
+msgstr "Administrateur"
+
+#: organisations/admin.py:82 organisations/forms.py:54
+msgid "Actif"
+msgstr "Actif"
+
 #: organisations/backends.py:21
 msgid "Le mot de passe est trop faible."
-msgstr ""
+msgstr "Le mot de passe est trop faible."
 
 #: organisations/backends.py:26 organisations/backends.py:29
 msgid "Your URL may have expired."
+msgstr "Votre URL a peut-être expiré."
+
+#: organisations/forms.py:27 users/models.py:60
+msgid "Adresse email"
+msgstr "Adresse email"
+
+#: organisations/forms.py:31 passport/models/passport.py:132
+msgid "Prénom"
+msgstr ""
+
+#: organisations/forms.py:37 passport/models/passport.py:144
+#: utils_mixins/models.py:77
+msgid "Nom"
+msgstr "Nom"
+
+#: organisations/forms.py:43 users/models.py:66
+msgid "Numéro de téléphone"
+msgstr "Numéro de téléphone"
+
+#: organisations/forms.py:49
+msgid "Mot de passe (si nouvel utilisateur)"
+msgstr ""
+
+#: organisations/forms.py:85
+msgid "Mot de passe (laisser vide pour ne pas changer)"
+msgstr ""
+
+#: organisations/forms.py:96
+msgid "Un utilisateur avec cet email existe déjà."
+msgstr ""
+
+#: organisations/forms.py:105
+msgid "Vous devez définir un mot de passe pour un nouvel utilisateur."
 msgstr ""
 
 #: organisations/management/commands/list_platform_admins.py:10
 msgid "Lister toutes les organisations administrateurs de plateforme"
-msgstr ""
+msgstr "Lister toutes les organisations administrateurs de plateforme"
 
 #: organisations/management/commands/list_platform_admins.py:16
 msgid "Afficher des informations détaillées"
-msgstr ""
+msgstr "Afficher des informations détaillées"
 
 #: organisations/management/commands/list_platform_admins.py:21
 msgid "Inclure les organisations inactives"
-msgstr ""
+msgstr "Inclure les organisations inactives"
 
-#: organisations/models/organisations.py:27
+#: organisations/models/organisations.py:29
 msgid "description"
-msgstr ""
+msgstr "description"
 
-#: organisations/models/organisations.py:27
+#: organisations/models/organisations.py:31
 msgid "Description détaillée de l'organisation"
-msgstr ""
+msgstr "Description détaillée de l'organisation"
 
-#: organisations/models/organisations.py:28
-msgid "email"
-msgstr ""
-
-#: organisations/models/organisations.py:28
-msgid "Email de contact principal"
-msgstr ""
-
-#: organisations/models/organisations.py:30
-msgid "phone"
-msgstr ""
-
-#: organisations/models/organisations.py:32
-msgid "Téléphone contact principal"
-msgstr ""
+#: organisations/models/organisations.py:34
+msgid "dmail"
+msgstr "e-mail"
 
 #: organisations/models/organisations.py:37
-msgid "localisation"
-msgstr ""
+msgid "Email de contact principal"
+msgstr "E-mail de contact principal"
 
 #: organisations/models/organisations.py:40
+msgid "phone"
+msgstr "téléphone"
+
+#: organisations/models/organisations.py:44
+msgid "Téléphone contact principal"
+msgstr "Téléphone de contact principal"
+
+#: organisations/models/organisations.py:49
+msgid "localisation"
+msgstr "localisation"
+
+#: organisations/models/organisations.py:52
 msgid "Ville ou région principale"
-msgstr ""
+msgstr "Ville ou région principale"
 
-#: organisations/models/organisations.py:43
+#: organisations/models/organisations.py:55
 msgid "adresse"
-msgstr ""
+msgstr "adresse"
 
-#: organisations/models/organisations.py:45
+#: organisations/models/organisations.py:57
 msgid "Adresse complète du siège social"
-msgstr ""
+msgstr "Adresse complète du siège social"
 
-#: organisations/models/organisations.py:48
+#: organisations/models/organisations.py:60
 msgid "code postal"
-msgstr ""
-
-#: organisations/models/organisations.py:53
-msgid "pays"
-msgstr ""
-
-#: organisations/models/organisations.py:56
-msgid "Code pays ISO 2 lettres"
-msgstr ""
-
-#: organisations/models/organisations.py:61
-msgid "fuseau horaire"
-msgstr ""
+msgstr "code postal"
 
 #: organisations/models/organisations.py:65
-msgid "Kinshasa (GMT + 1)"
-msgstr ""
-
-#: organisations/models/organisations.py:66
-msgid "Lubumbashi (GMT + 2)"
-msgstr ""
-
-#: organisations/models/organisations.py:67
-msgid "Dakar (GMT + 0)"
-msgstr ""
+msgid "pays"
+msgstr "pays"
 
 #: organisations/models/organisations.py:68
+msgid "Code pays ISO 2 lettres"
+msgstr "Code pays ISO 2 lettres"
+
+#: organisations/models/organisations.py:73
+msgid "fuseau horaire"
+msgstr "fuseau horaire"
+
+#: organisations/models/organisations.py:77
+msgid "Kinshasa (GMT + 1)"
+msgstr "Kinshasa (GMT + 1)"
+
+#: organisations/models/organisations.py:78
+msgid "Lubumbashi (GMT + 2)"
+msgstr "Lubumbashi (GMT + 2)"
+
+#: organisations/models/organisations.py:79
+msgid "Dakar (GMT + 0)"
+msgstr "Dakar (GMT + 0)"
+
+#: organisations/models/organisations.py:80
 msgid "Nairobi (GMT + 3)"
-msgstr ""
+msgstr "Nairobi (GMT + 3)"
 
-#: organisations/models/organisations.py:75
-msgid "Organisation"
-msgstr ""
-
-#: organisations/models/organisations.py:76
+#: organisations/models/organisations.py:87
 msgid "Organisations"
-msgstr ""
+msgstr "Organisations"
 
-#: organisations/models/organisations.py:88
+#: organisations/models/organisations.py:100
 msgid "Ce préfixe est déjà utilisé par une autre organisation"
-msgstr ""
+msgstr "Ce préfixe est déjà utilisé par une autre organisation"
 
-#: organisations/models/organisations.py:141
+#: organisations/models/organisations.py:166
 msgid "date d'adhésion"
-msgstr ""
+msgstr "date d'adhésion"
 
-#: organisations/models/organisations.py:142
+#: organisations/models/organisations.py:170
 msgid "dernière activité"
-msgstr ""
+msgstr "dernière activité"
 
-#: organisations/models/organisations.py:145
+#: organisations/models/organisations.py:176
 msgid "notifications email"
-msgstr ""
+msgstr "notifications par e-mail"
 
-#: organisations/models/organisations.py:148
-msgid "Utilisateur d'organisation"
-msgstr ""
+#: organisations/models/organisations.py:181
+msgid "Utilisateur de l'organisation"
+msgstr "Utilisateur de l'organisation"
 
-#: organisations/models/organisations.py:149
-msgid "Utilisateurs d'organisation"
-msgstr ""
+#: organisations/models/organisations.py:182
+msgid "Utilisateurs de l'organisation"
+msgstr "Utilisateurs de l'organisation"
 
 #: organisations/services/organization.py:86
 msgid "There is already an organization member with this email address!"
-msgstr ""
+msgstr "Il y a déjà un membre de l'organisation avec cette adresse e-mail !"
 
-#: passport/models/passport.py:33
+#: passport/models/passport.py:37
 msgid "En attente"
-msgstr ""
+msgstr "En attente"
 
-#: passport/models/passport.py:34
+#: passport/models/passport.py:38
 msgid "Reçu"
-msgstr ""
+msgstr "Reçu"
 
-#: passport/models/passport.py:35
+#: passport/models/passport.py:39
 msgid "En traitement"
-msgstr ""
+msgstr "En cours de traitement"
 
-#: passport/models/passport.py:36 passport/models/passport.py:146
+#: passport/models/passport.py:40 passport/models/passport.py:160
 msgid "Terminé"
-msgstr ""
+msgstr "Terminé"
 
-#: passport/models/passport.py:37 passport/models/passport.py:144
+#: passport/models/passport.py:41 passport/models/passport.py:158
 msgid "Publié"
-msgstr ""
+msgstr "Publié"
 
-#: passport/models/passport.py:51
+#: passport/models/passport.py:55
 msgid "Lot des passports"
+msgstr "Lot de passeports"
+
+#: passport/models/passport.py:56
+msgid "Lots des passports"
+msgstr "Lots de passeports"
+
+#: passport/models/passport.py:113
+#, fuzzy
+#| msgid "Log out"
+msgid "Lot"
+msgstr "Se déconnecter"
+
+#: passport/models/passport.py:114
+msgid "The batch this passport belongs to"
+msgstr "Le lot auquel appartient ce passeport"
+
+#: passport/models/passport.py:120
+#, fuzzy
+#| msgid "Lot des passports"
+msgid "Code du passport"
+msgstr "Code du passeport"
+
+#: passport/models/passport.py:121
+msgid "Unique code for the passport"
+msgstr "Code unique pour le passeport"
+
+#: passport/models/passport.py:127
+msgid "ID du coupon"
 msgstr ""
 
-#: passport/models/passport.py:52
-msgid "Lots des passports"
+#: passport/models/passport.py:128
+msgid "Coupon identifier associated with the passport"
 msgstr ""
+
+#: passport/models/passport.py:133
+msgid "First name of the passport holder"
+msgstr "Prénom du détenteur du passport"
+
+#: passport/models/passport.py:139
+msgid "Postnom"
+msgstr ""
+
+#: passport/models/passport.py:140
+msgid "Middle name of the passport holder"
+msgstr "Postnom du détenteur du passeport"
 
 #: passport/models/passport.py:145
+msgid "Last name of the passport holder"
+msgstr "Nom de famille du détenteur du passeport"
+
+#: passport/models/passport.py:149
+msgid "Genre"
+msgstr ""
+
+#: passport/models/passport.py:150
+msgid "Gender of the passport holder"
+msgstr "Genre du détenteur du passeport"
+
+#: passport/models/passport.py:154
+msgid "Statut"
+msgstr "Statut"
+
+#: passport/models/passport.py:155
+#, fuzzy
+#| msgid "Lots des passports"
+msgid "Status of the passport"
+msgstr "Lots de passeports"
+
+#: passport/models/passport.py:159
 msgid "Brouillon"
-msgstr ""
+msgstr "Brouillon"
 
-#: passport/models/passport.py:147
+#: passport/models/passport.py:161
 msgid "Perdu"
-msgstr ""
+msgstr "Perdu"
 
-#: passport/models/passport.py:148
+#: passport/models/passport.py:162
 msgid "Retiré"
-msgstr ""
+msgstr "Retiré"
 
-#: passport/models/passport.py:165
+#: passport/models/passport.py:168
+#, fuzzy
+#| msgid "Date de creation"
+msgid "Date de publication"
+msgstr "Date de création"
+
+#: passport/models/passport.py:169
+msgid "Publication date of the passport"
+msgstr "Date de publication du passeport"
+
+#: passport/models/passport.py:174
+#, fuzzy
+#| msgid "Date de creation"
+msgid "Date de retrait"
+msgstr "Date de création"
+
+#: passport/models/passport.py:175
+msgid "Date when the passport was taken"
+msgstr "Date à laquelle le passeport a été retiré"
+
+#: passport/models/passport.py:181
 msgid "Passport"
-msgstr ""
+msgstr "Passeport"
 
-#: passport/models/passport.py:166
+#: passport/models/passport.py:182
 msgid "Passports"
-msgstr ""
+msgstr "Passeports"
 
 #: unfold/admin.py:45 unfold/templatetags/unfold_list.py:361
 msgid "Select record"
-msgstr ""
+msgstr "Sélectionner l'enregistrement"
 
 #: unfold/admin.py:194
 msgid "Select action"
-msgstr ""
+msgstr "Sélectionner l'action"
 
 #: unfold/contrib/constance/templates/admin/constance/change_list.html:41
 #: unfold/contrib/guardian/templates/admin/guardian/model/obj_perms_manage_group.html:23
@@ -208,37 +343,37 @@ msgstr ""
 #: unfold/templates/admin/pagination.html:19
 #: unfold/templates/admin/submit_line.html:9
 msgid "Save"
-msgstr ""
+msgstr "Enregistrer"
 
 #: unfold/contrib/constance/templates/admin/constance/includes/results_list.html:10
 msgid "Collapse"
-msgstr ""
+msgstr "Réduire"
 
 #: unfold/contrib/constance/templates/admin/constance/includes/results_list.html:19
 msgid "Name"
-msgstr ""
+msgstr "Nom"
 
 #: unfold/contrib/constance/templates/admin/constance/includes/results_list.html:20
 #: unfold/contrib/filters/forms.py:179
 msgid "Value"
-msgstr ""
+msgstr "Valeur"
 
 #: unfold/contrib/constance/templates/admin/constance/includes/results_list.html:21
 msgid "Default"
-msgstr ""
+msgstr "Défaut"
 
 #: unfold/contrib/constance/templates/admin/constance/includes/results_list.html:22
 #: unfold/contrib/forms/templates/unfold/forms/helpers/toolbar.html:59
 msgid "Code"
-msgstr ""
+msgstr "Code"
 
 #: unfold/contrib/constance/templates/admin/constance/includes/results_list.html:23
 msgid "Modified"
-msgstr ""
+msgstr "Modifié"
 
 #: unfold/contrib/constance/templates/admin/constance/includes/results_list.html:65
 msgid "Reset to default"
-msgstr ""
+msgstr "Réinitialiser par défaut"
 
 #: unfold/contrib/filters/admin/choice_filters.py:23
 #: unfold/contrib/filters/admin/choice_filters.py:77
@@ -246,7 +381,7 @@ msgstr ""
 #: unfold/contrib/filters/admin/dropdown_filters.py:22
 #: unfold/contrib/filters/admin/mixins.py:45
 msgid "All"
-msgstr ""
+msgstr "Tout"
 
 #: unfold/contrib/filters/admin/choice_filters.py:47
 #: unfold/contrib/filters/admin/choice_filters.py:115
@@ -267,128 +402,128 @@ msgstr ""
 #: unfold/templates/admin/filter.html:5
 #, python-format
 msgid " By %(filter_title)s "
-msgstr ""
+msgstr " Par %(filter_title)s "
 
 #: unfold/contrib/filters/admin/choice_filters.py:108
 msgid "Yes"
-msgstr ""
+msgstr "Oui"
 
 #: unfold/contrib/filters/admin/choice_filters.py:109
 msgid "No"
-msgstr ""
+msgstr "Non"
 
 #: unfold/contrib/filters/forms.py:203 unfold/contrib/filters/forms.py:248
 msgid "From"
-msgstr ""
+msgstr "Du"
 
 #: unfold/contrib/filters/forms.py:214 unfold/contrib/filters/forms.py:258
 msgid "To"
-msgstr ""
+msgstr "Au"
 
 #: unfold/contrib/filters/forms.py:282
 msgid "Date from"
-msgstr ""
+msgstr "Date de début"
 
 #: unfold/contrib/filters/forms.py:287 unfold/contrib/filters/forms.py:303
 #: unfold/widgets.py:603 unfold/widgets.py:648
 msgid "Time"
-msgstr ""
+msgstr "Heure"
 
 #: unfold/contrib/filters/forms.py:298
 msgid "Date to"
-msgstr ""
+msgstr "Date de fin"
 
 #: unfold/contrib/filters/templates/unfold/filters/filters_numeric_slider.html:21
 msgid "Not enough data."
-msgstr ""
+msgstr "Pas assez de données."
 
 #: unfold/contrib/forms/templates/unfold/forms/array.html:30
 msgid "Add new item"
-msgstr ""
+msgstr "Ajouter un nouvel élément"
 
 #: unfold/contrib/forms/templates/unfold/forms/helpers/toolbar.html:7
 msgid "Paragraph"
-msgstr ""
+msgstr "Paragraphe"
 
 #: unfold/contrib/forms/templates/unfold/forms/helpers/toolbar.html:11
 msgid "Underlined"
-msgstr ""
+msgstr "Souligné"
 
 #: unfold/contrib/forms/templates/unfold/forms/helpers/toolbar.html:15
 msgid "Bold"
-msgstr ""
+msgstr "Gras"
 
 #: unfold/contrib/forms/templates/unfold/forms/helpers/toolbar.html:19
 msgid "Italic"
-msgstr ""
+msgstr "Italique"
 
 #: unfold/contrib/forms/templates/unfold/forms/helpers/toolbar.html:23
 msgid "Strike"
-msgstr ""
+msgstr "Barré"
 
 #: unfold/contrib/forms/templates/unfold/forms/helpers/toolbar.html:27
 #: unfold/contrib/forms/templates/unfold/forms/helpers/toolbar.html:98
 msgid "Link"
-msgstr ""
+msgstr "Lien"
 
 #: unfold/contrib/forms/templates/unfold/forms/helpers/toolbar.html:35
 #: unfold/contrib/forms/templates/unfold/forms/helpers/toolbar.html:39
 #: unfold/contrib/forms/templates/unfold/forms/helpers/toolbar.html:43
 #: unfold/contrib/forms/templates/unfold/forms/helpers/toolbar.html:47
 msgid "Heading"
-msgstr ""
+msgstr "Titre"
 
 #: unfold/contrib/forms/templates/unfold/forms/helpers/toolbar.html:55
 msgid "Quote"
-msgstr ""
+msgstr "Citation"
 
 #: unfold/contrib/forms/templates/unfold/forms/helpers/toolbar.html:63
 msgid "Unordered list"
-msgstr ""
+msgstr "Liste non ordonnée"
 
 #: unfold/contrib/forms/templates/unfold/forms/helpers/toolbar.html:67
 msgid "Ordered list"
-msgstr ""
+msgstr "Liste ordonnée"
 
 #: unfold/contrib/forms/templates/unfold/forms/helpers/toolbar.html:71
 msgid "Indent increase"
-msgstr ""
+msgstr "Augmenter le retrait"
 
 #: unfold/contrib/forms/templates/unfold/forms/helpers/toolbar.html:75
 msgid "Indent decrease"
-msgstr ""
+msgstr "Diminuer le retrait"
 
 #: unfold/contrib/forms/templates/unfold/forms/helpers/toolbar.html:83
 msgid "Undo"
-msgstr ""
+msgstr "Annuler"
 
 #: unfold/contrib/forms/templates/unfold/forms/helpers/toolbar.html:87
 msgid "Redo"
-msgstr ""
+msgstr "Rétablir"
 
 #: unfold/contrib/forms/templates/unfold/forms/helpers/toolbar.html:95
 msgid "Enter an URL"
-msgstr ""
+msgstr "Entrez une URL"
 
 #: unfold/contrib/forms/templates/unfold/forms/helpers/toolbar.html:102
 msgid "Unlink"
-msgstr ""
+msgstr "Supprimer le lien"
 
 #: unfold/contrib/guardian/templates/admin/guardian/model/change_form.html:8
 msgid "Object permissions"
-msgstr ""
+msgstr "Permissions d'objet"
 
 #: unfold/contrib/guardian/templates/admin/guardian/model/obj_perms_manage_group.html:13
 #: unfold/contrib/guardian/templates/admin/guardian/model/obj_perms_manage_user.html:14
 #: unfold/contrib/simple_history/templates/simple_history/object_history_list.html:9
 #: unfold/contrib/simple_history/templates/simple_history/object_history_list.html:43
 msgid "Object"
-msgstr ""
+msgstr "Objet"
 
 #: unfold/contrib/guardian/templates/admin/guardian/model/obj_perms_manage_group.html:16
 #: unfold/contrib/guardian/templates/unfold/guardian/group_form.html:15
 msgid "Group"
-msgstr ""
+msgstr "Groupe"
 
 #: unfold/contrib/guardian/templates/admin/guardian/model/obj_perms_manage_user.html:17
 #: unfold/contrib/guardian/templates/unfold/guardian/group_form.html:33
@@ -397,11 +532,11 @@ msgstr ""
 #: unfold/templates/admin/object_history.html:14
 #: unfold/templates/admin/object_history.html:30
 msgid "User"
-msgstr ""
+msgstr "Utilisateur"
 
 #: unfold/contrib/guardian/templates/unfold/guardian/group_form.html:7
 msgid "Group permissions"
-msgstr ""
+msgstr "Permissions du groupe"
 
 #: unfold/contrib/guardian/templates/unfold/guardian/group_form.html:25
 #: unfold/contrib/guardian/templates/unfold/guardian/group_form.html:49
@@ -410,36 +545,44 @@ msgstr ""
 #: unfold/templates/admin/object_history.html:18
 #: unfold/templates/admin/object_history.html:34
 msgid "Action"
-msgstr ""
+msgstr "Action"
 
 #: unfold/contrib/guardian/templates/unfold/guardian/group_form.html:51
 #: unfold/contrib/guardian/templates/unfold/guardian/user_form.html:51
 msgid "Edit"
-msgstr ""
+msgstr "Modifier"
 
 #: unfold/contrib/guardian/templates/unfold/guardian/group_form.html:67
 msgid "Manage group"
-msgstr ""
+msgstr "Gérer le groupe"
 
 #: unfold/contrib/guardian/templates/unfold/guardian/user_form.html:7
 msgid "User permissions"
-msgstr ""
+msgstr "Permissions de l'utilisateur"
 
 #: unfold/contrib/guardian/templates/unfold/guardian/user_form.html:67
 msgid "Manage user"
-msgstr ""
+msgstr "Gérer l'utilisateur"
 
 #: unfold/contrib/import_export/templates/admin/import_export/change_form.html:8
 #: unfold/contrib/import_export/templates/admin/import_export/change_list_export_item.html:4
 msgid "Export"
-msgstr ""
+msgstr "Exporter"
 
 #: unfold/contrib/import_export/templates/admin/import_export/change_list_import_item.html:4
 msgid "Import"
-msgstr ""
+msgstr "Importer"
 
 #: unfold/contrib/import_export/templates/admin/import_export/export.html:18
-#, python-format
+#, fuzzy, python-format
+#| msgid ""
+#| "\n"
+#| "                    Export %(len)s selected item.\n"
+#| "                "
+#| msgid_plural ""
+#| "\n"
+#| "                    Export %(len)s selected items.\n"
+#| "                "
 msgid ""
 "\n"
 "                    Export %(len)s selected item.\n"
@@ -448,91 +591,95 @@ msgid_plural ""
 "\n"
 "                    Export %(len)s selected items.\n"
 "                "
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Exporter %(len)s élément sélectionné."
+msgstr[1] "Exporter %(len)s éléments sélectionnés."
 
 #: unfold/contrib/import_export/templates/admin/import_export/export.html:37
 msgid "This exporter will export the following fields"
-msgstr ""
+msgstr "Cet exportateur exportera les champs suivants"
 
 #: unfold/contrib/import_export/templates/admin/import_export/export.html:56
 #: unfold/contrib/import_export/templates/admin/import_export/import_form.html:21
 msgid "Submit"
-msgstr ""
+msgstr "Soumettre"
 
 #: unfold/contrib/import_export/templates/admin/import_export/import_confirm.html:10
 msgid ""
 "Below is a preview of data to be imported. If you are satisfied with the "
 "results, click 'Confirm import'"
 msgstr ""
+"Voici un aperçu des données à importer. Si vous êtes satisfait des "
+"résultats, cliquez sur 'Confirmer l'importation'"
 
 #: unfold/contrib/import_export/templates/admin/import_export/import_confirm.html:15
 msgid "Confirm import"
-msgstr ""
+msgstr "Confirmer l'importation"
 
 #: unfold/contrib/import_export/templates/admin/import_export/import_errors.html:20
 msgid "Line number"
-msgstr ""
+msgstr "Numéro de ligne"
 
 #: unfold/contrib/import_export/templates/admin/import_export/import_preview.html:22
 msgid "New"
-msgstr ""
+msgstr "Nouveau"
 
 #: unfold/contrib/import_export/templates/admin/import_export/import_preview.html:24
 msgid "Skipped"
-msgstr ""
+msgstr "Ignoré"
 
 #: unfold/contrib/import_export/templates/admin/import_export/import_preview.html:26
 #: unfold/templates/admin/submit_line.html:60
 msgid "Delete"
-msgstr ""
+msgstr "Supprimer"
 
 #: unfold/contrib/import_export/templates/admin/import_export/import_preview.html:28
 msgid "Update"
-msgstr ""
+msgstr "Mettre à jour"
 
 #: unfold/contrib/import_export/templates/admin/import_export/import_validation.html:6
 msgid "Some rows failed to validate"
-msgstr ""
+msgstr "Certaines lignes n'ont pas réussi la validation"
 
 #: unfold/contrib/import_export/templates/admin/import_export/import_validation.html:10
 msgid ""
 "Please correct these errors in your data where possible, then reupload it "
 "using the form above."
 msgstr ""
+"Veuillez corriger ces erreurs dans vos données si possible, puis re-"
+"téléchargez-les à l'aide du formulaire ci-dessus."
 
 #: unfold/contrib/import_export/templates/admin/import_export/import_validation.html:22
 #: unfold/contrib/import_export/templates/admin/import_export/import_validation.html:40
 msgid "Row"
-msgstr ""
+msgstr "Ligne"
 
 #: unfold/contrib/import_export/templates/admin/import_export/import_validation.html:26
 #: unfold/contrib/import_export/templates/admin/import_export/import_validation.html:44
 msgid "Errors"
-msgstr ""
+msgstr "Erreurs"
 
 #: unfold/contrib/import_export/templates/admin/import_export/import_validation.html:70
 msgid "Non field specific"
-msgstr ""
+msgstr "Non spécifique au champ"
 
 #: unfold/contrib/import_export/templates/admin/import_export/resource_fields_list.html:6
 msgid "This exporter will export the following fields: "
-msgstr ""
+msgstr "Cet exportateur exportera les champs suivants : "
 
 #: unfold/contrib/import_export/templates/admin/import_export/resource_fields_list.html:8
 msgid "This importer will import the following fields: "
-msgstr ""
+msgstr "Cet importateur importera les champs suivants : "
 
 #. Translators: Model verbose name and instance representation,
 #. suitable to be an item in a list.
 #: unfold/contrib/inlines/admin.py:99
 #, python-format
 msgid "%(class_name)s %(instance)s"
-msgstr ""
+msgstr "%(class_name)s %(instance)s"
 
 #: unfold/contrib/inlines/admin.py:108
 msgid "and"
-msgstr ""
+msgstr "et"
 
 #: unfold/contrib/inlines/admin.py:111
 #, python-format
@@ -540,80 +687,88 @@ msgid ""
 "Deleting %(class_name)s %(instance)s would require deleting the following "
 "protected related objects: %(related_objects)s"
 msgstr ""
+"La suppression de %(class_name)s %(instance)s nécessiterait la suppression "
+"des objets liés protégés suivants : %(related_objects)s"
 
 #: unfold/contrib/simple_history/templates/simple_history/object_history.html:8
 msgid ""
 "Choose a date from the list below to revert to a previous version of this "
 "object."
 msgstr ""
+"Choisissez une date dans la liste ci-dessous pour revenir à une version "
+"précédente de cet objet."
 
 #: unfold/contrib/simple_history/templates/simple_history/object_history.html:28
 #: unfold/templates/admin/object_history.html:57
 msgid "entry"
 msgid_plural "entries"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "entrée"
+msgstr[1] "entrées"
 
 #: unfold/contrib/simple_history/templates/simple_history/object_history.html:32
 msgid "This object doesn't have a change history."
-msgstr ""
+msgstr "Cet objet n'a pas d'historique de changements."
 
 #: unfold/contrib/simple_history/templates/simple_history/object_history_form.html:16
 msgid ""
 "Press the 'Revert' button below to revert to this version of the object."
 msgstr ""
+"Appuyez sur le bouton 'Rétablir' ci-dessous pour revenir à cette version de "
+"l'objet."
 
 #: unfold/contrib/simple_history/templates/simple_history/object_history_form.html:20
 msgid "Press the 'Change History' button below to edit the history."
 msgstr ""
+"Appuyez sur le bouton 'Historique des changements' ci-dessous pour modifier "
+"l'historique."
 
 #: unfold/contrib/simple_history/templates/simple_history/object_history_list.html:19
 #: unfold/contrib/simple_history/templates/simple_history/object_history_list.html:55
 #: unfold/templates/admin/object_history.html:10
 #: unfold/templates/admin/object_history.html:26
 msgid "Date/time"
-msgstr ""
+msgstr "Date/heure"
 
 #: unfold/contrib/simple_history/templates/simple_history/object_history_list.html:23
 #: unfold/contrib/simple_history/templates/simple_history/object_history_list.html:59
 msgid "Comment"
-msgstr ""
+msgstr "Commentaire"
 
 #: unfold/contrib/simple_history/templates/simple_history/object_history_list.html:27
 #: unfold/contrib/simple_history/templates/simple_history/object_history_list.html:63
 msgid "Changed by"
-msgstr ""
+msgstr "Modifié par"
 
 #: unfold/contrib/simple_history/templates/simple_history/object_history_list.html:31
 #: unfold/contrib/simple_history/templates/simple_history/object_history_list.html:77
 msgid "Change reason"
-msgstr ""
+msgstr "Raison du changement"
 
 #: unfold/contrib/simple_history/templates/simple_history/object_history_list.html:35
 #: unfold/contrib/simple_history/templates/simple_history/object_history_list.html:81
 msgid "Changes"
-msgstr ""
+msgstr "Changements"
 
 #: unfold/contrib/simple_history/templates/simple_history/object_history_list.html:73
 msgid "None"
-msgstr ""
+msgstr "Aucun"
 
 #: unfold/contrib/simple_history/templates/simple_history/submit_line.html:8
 msgid "Revert"
-msgstr ""
+msgstr "Rétablir"
 
 #: unfold/contrib/simple_history/templates/simple_history/submit_line.html:14
 msgid "Change History"
-msgstr ""
+msgstr "Historique des changements"
 
 #: unfold/contrib/simple_history/templates/simple_history/submit_line.html:19
 #: unfold/templates/admin/submit_line.html:52
 msgid "Close"
-msgstr ""
+msgstr "Fermer"
 
 #: unfold/forms.py:72
 msgid "Select action to run"
-msgstr ""
+msgstr "Sélectionnez l'action à exécuter"
 
 #: unfold/forms.py:137
 msgid ""
@@ -621,88 +776,96 @@ msgid ""
 "password, but you can change the password using <a href=\"{}\" class=\"text-"
 "primary-600 dark:text-primary-500\">this form</a>."
 msgstr ""
+"Les mots de passe bruts ne sont pas stockés, il n'y a donc aucun moyen de "
+"voir le mot de passe de cet utilisateur, mais vous pouvez le changer en "
+"utilisant <a href=\"{}\" class=\"text-primary-600 dark:text-primary-500\">ce "
+"formulaire</a>."
 
 #: unfold/mixins/base_model_admin.py:57 unfold/mixins/base_model_admin.py:78
 msgid "Select value"
-msgstr ""
+msgstr "Sélectionner la valeur"
 
 #: unfold/templates/admin/actions.html:22
 #: unfold/templates/admin/dataset_actions.html:46
 msgid "Run the selected action"
-msgstr ""
+msgstr "Exécuter l'action sélectionnée"
 
 #: unfold/templates/admin/actions.html:23
 #: unfold/templates/admin/dataset_actions.html:47
 msgid "Run"
-msgstr ""
+msgstr "Exécuter"
 
 #: unfold/templates/admin/actions.html:43
 #: unfold/templates/admin/dataset_actions.html:17
 msgid "Click here to select the objects across all pages"
-msgstr ""
+msgstr "Cliquez ici pour sélectionner les objets sur toutes les pages"
 
 #: unfold/templates/admin/actions.html:44
 #: unfold/templates/admin/dataset_actions.html:18
 #, python-format
 msgid "Select all %(total_count)s %(module_name)s"
-msgstr ""
+msgstr "Sélectionner les %(total_count)s %(module_name)s"
 
 #: unfold/templates/admin/actions.html:50
 #: unfold/templates/admin/dataset_actions.html:24
 msgid "Clear selection"
-msgstr ""
+msgstr "Effacer la sélection"
 
 #: unfold/templates/admin/app_index.html:5
 #: unfold/templates/admin/base_site.html:3 unfold/templates/admin/index.html:5
 #: unfold/templates/admin/login.html:15
 #: unfold/templates/unfold/layouts/base.html:7
 msgid "Django site admin"
-msgstr ""
+msgstr "Administration du site Django"
 
 #: unfold/templates/admin/app_list.html:12
 #: unfold/templates/unfold/helpers/app_list_default.html:9
 #, python-format
 msgid "Models in the %(name)s application"
-msgstr ""
+msgstr "Modèles dans l'application %(name)s"
 
 #: unfold/templates/admin/app_list.html:48
 #: unfold/templates/unfold/helpers/app_list.html:91
 #: unfold/templates/unfold/helpers/app_list_default.html:59
 msgid "You don’t have permission to view or edit anything."
-msgstr ""
+msgstr "Vous n'avez la permission de voir ou de modifier quoi que ce soit."
 
 #: unfold/templates/admin/auth/user/add_form.html:6
 msgid "After you've created a user, you’ll be able to edit more user options."
 msgstr ""
+"Après avoir créé un utilisateur, vous pourrez modifier plus d'options "
+"utilisateur."
 
 #: unfold/templates/admin/auth/user/change_password.html:19
 #, python-format
 msgid "Enter a new password for the user <strong>%(username)s</strong>."
 msgstr ""
+"Entrez un nouveau mot de passe pour l'utilisateur <strong>%(username)s</"
+"strong>."
 
 #: unfold/templates/admin/auth/user/change_password.html:30
 #: unfold/templates/registration/password_change_form.html:32
 #: unfold/templates/unfold/helpers/account_links.html:30
 msgid "Change password"
-msgstr ""
+msgstr "Changer le mot de passe"
 
 #: unfold/templates/admin/change_form_object_tools.html:6
 msgid "History"
-msgstr ""
+msgstr "Historique"
 
 #: unfold/templates/admin/change_form_object_tools.html:12
 #: unfold/templates/admin/edit_inline/stacked.html:71
 #: unfold/templates/unfold/helpers/edit_inline/tabular_title.html:33
 msgid "View on site"
-msgstr ""
+msgstr "Voir sur le site"
 
 #: unfold/templates/admin/change_list.html:69
 msgid "Filters"
-msgstr ""
+msgstr "Filtres"
 
 #: unfold/templates/admin/change_list_results.html:33
 msgid "Expand row"
-msgstr ""
+msgstr "Développer la ligne"
 
 #: unfold/templates/admin/delete_confirmation.html:16
 #, python-format
@@ -711,6 +874,9 @@ msgid ""
 "related objects, but your account doesn't have permission to delete the "
 "following types of objects:"
 msgstr ""
+"La suppression de %(object_name)s '%(escaped_object)s' entraînerait la "
+"suppression d'objets liés, mais votre compte n'a pas la permission de "
+"supprimer les types d'objets suivants :"
 
 #: unfold/templates/admin/delete_confirmation.html:32
 #, python-format
@@ -718,6 +884,8 @@ msgid ""
 "Deleting the %(object_name)s '%(escaped_object)s' would require deleting the "
 "following protected related objects:"
 msgstr ""
+"La suppression de %(object_name)s '%(escaped_object)s' nécessiterait la "
+"suppression des objets liés protégés suivants :"
 
 #: unfold/templates/admin/delete_confirmation.html:48
 #, python-format
@@ -725,11 +893,13 @@ msgid ""
 "Are you sure you want to delete the %(object_name)s \"%(escaped_object)s\"? "
 "All of the following related items will be deleted:"
 msgstr ""
+"Êtes-vous sûr de vouloir supprimer %(object_name)s « %(escaped_object)s » ? "
+"Tous les éléments liés suivants seront supprimés :"
 
 #: unfold/templates/admin/delete_confirmation.html:55
 #: unfold/templates/admin/delete_selected_confirmation.html:49
 msgid "Objects"
-msgstr ""
+msgstr "Objets"
 
 #: unfold/templates/admin/delete_selected_confirmation.html:15
 #, python-format
@@ -738,6 +908,9 @@ msgid ""
 "objects, but your account doesn't have permission to delete the following "
 "types of objects:"
 msgstr ""
+"La suppression des %(objects_name)s sélectionnés entraînerait la suppression "
+"d'objets liés, mais votre compte n'a pas la permission de supprimer les "
+"types d'objets suivants :"
 
 #: unfold/templates/admin/delete_selected_confirmation.html:28
 #, python-format
@@ -745,6 +918,8 @@ msgid ""
 "Deleting the selected %(objects_name)s would require deleting the following "
 "protected related objects:"
 msgstr ""
+"La suppression des %(objects_name)s sélectionnés nécessiterait la "
+"suppression des objets liés protégés suivants :"
 
 #: unfold/templates/admin/delete_selected_confirmation.html:42
 #, python-format
@@ -752,26 +927,28 @@ msgid ""
 "Are you sure you want to delete the selected %(objects_name)s? All of the "
 "following objects and their related items will be deleted:"
 msgstr ""
+"Êtes-vous sûr de vouloir supprimer les %(objects_name)s sélectionnés ? Tous "
+"les objets suivants et leurs éléments liés seront supprimés :"
 
 #: unfold/templates/admin/edit_inline/stacked.html:57
 #: unfold/templates/unfold/helpers/app_list_default.html:42
 #: unfold/templates/unfold/helpers/edit_inline/tabular_title.html:23
 msgid "Change"
-msgstr ""
+msgstr "Modifier"
 
 #: unfold/templates/admin/edit_inline/stacked.html:59
 #: unfold/templates/unfold/helpers/app_list_default.html:38
 #: unfold/templates/unfold/helpers/edit_inline/tabular_title.html:25
 msgid "View"
-msgstr ""
+msgstr "Voir"
 
 #: unfold/templates/admin/includes/object_delete_summary.html:5
 msgid "Summary"
-msgstr ""
+msgstr "Résumé"
 
 #: unfold/templates/admin/login.html:15
 msgid "Welcome back to"
-msgstr ""
+msgstr "Bienvenue à nouveau sur"
 
 #: unfold/templates/admin/login.html:26
 #, python-format
@@ -779,164 +956,179 @@ msgid ""
 "You are authenticated as %(username)s, but are not authorized to access this "
 "page. Would you like to login to a different account?"
 msgstr ""
+"Vous êtes authentifié en tant que %(username)s, mais n'êtes pas autorisé à "
+"accéder à cette page. Voulez-vous vous connecter à un compte différent ?"
 
 #: unfold/templates/admin/login.html:47
 msgid "Log in"
-msgstr ""
+msgstr "Se connecter"
 
 #: unfold/templates/admin/login.html:55
 msgid "Forgotten your password or username?"
-msgstr ""
+msgstr "Mot de passe ou nom d'utilisateur oublié ?"
 
 #: unfold/templates/admin/object_history.html:60
 msgid ""
 "This object doesn’t have a change history. It probably wasn’t added via this "
 "admin site."
 msgstr ""
+"Cet objet n'a pas d'historique de changements. Il n'a probablement pas été "
+"ajouté via ce site d'administration."
 
 #: unfold/templates/admin/pagination.html:12
 #: unfold/templates/unfold/helpers/popup_header.html:14
 #: unfold/templates/unfold/helpers/welcomemsg.html:25
 msgid "Show all"
-msgstr ""
+msgstr "Afficher tout"
 
 #: unfold/templates/admin/search_form.html:18
 #: unfold/templates/unfold/helpers/command.html:24
 msgid "Type to search"
-msgstr ""
+msgstr "Tapez pour rechercher"
 
 #: unfold/templates/admin/submit_line.html:28
 msgid "Save and continue editing"
-msgstr ""
+msgstr "Enregistrer et continuer la modification"
 
 #: unfold/templates/admin/submit_line.html:30
 msgid "Save and view"
-msgstr ""
+msgstr "Enregistrer et afficher"
 
 #: unfold/templates/admin/submit_line.html:37
 msgid "Save and add another"
-msgstr ""
+msgstr "Enregistrer et ajouter un autre"
 
 #: unfold/templates/admin/submit_line.html:43
 msgid "Save as new"
-msgstr ""
+msgstr "Enregistrer comme nouveau"
 
 #: unfold/templates/registration/logged_out.html:14
 msgid "You have been successfully logged out from the administration"
-msgstr ""
+msgstr "Vous avez été déconnecté avec succès de l'administration"
 
 #: unfold/templates/registration/logged_out.html:18
 msgid "Thanks for spending some quality time with the web site today."
-msgstr ""
+msgstr "Merci d'avoir passé du temps de qualité avec le site web aujourd'hui."
 
 #: unfold/templates/registration/logged_out.html:23
 msgid "Log in again"
-msgstr ""
+msgstr "Se connecter à nouveau"
 
 #: unfold/templates/registration/password_change_done.html:8
 msgid "Your password was changed."
-msgstr ""
+msgstr "Votre mot de passe a été changé."
 
 #: unfold/templates/registration/password_change_form.html:18
 msgid ""
 "Please enter your old password, for security’s sake, and then enter your new "
 "password twice so we can verify you typed it in correctly."
 msgstr ""
+"Veuillez entrer votre ancien mot de passe, par mesure de sécurité, puis "
+"entrez votre nouveau mot de passe deux fois afin que nous puissions vérifier "
+"que vous l'avez tapé correctement."
 
 #: unfold/templates/unfold/components/table.html:93
 msgid "No data"
-msgstr ""
+msgstr "Aucune donnée"
 
 #: unfold/templates/unfold/helpers/account_links.html:17
 msgid "View site"
-msgstr ""
+msgstr "Voir le site"
 
 #: unfold/templates/unfold/helpers/account_links.html:40
 msgid "Log out"
-msgstr ""
+msgstr "Se déconnecter"
 
 #: unfold/templates/unfold/helpers/actions_row.html:4
 msgid "More actions"
-msgstr ""
+msgstr "Plus d'actions"
 
 #: unfold/templates/unfold/helpers/add_link.html:5
 #: unfold/templates/unfold/helpers/add_link.html:8
 #: unfold/templates/unfold/helpers/empty_results.html:4
 #, python-format
 msgid "Add %(name)s"
-msgstr ""
+msgstr "Ajouter %(name)s"
 
 #: unfold/templates/unfold/helpers/app_list.html:60
 msgid "All applications"
-msgstr ""
+msgstr "Toutes les applications"
 
 #: unfold/templates/unfold/helpers/app_list_default.html:31
 msgid "Add"
-msgstr ""
+msgstr "Ajouter"
 
 #: unfold/templates/unfold/helpers/boolean.html:4
 msgid "Unknown"
-msgstr ""
+msgstr "Inconnu"
 
 #: unfold/templates/unfold/helpers/boolean.html:4
 msgid "True"
-msgstr ""
+msgstr "Vrai"
 
 #: unfold/templates/unfold/helpers/boolean.html:4
 msgid "False"
-msgstr ""
+msgstr "Faux"
 
 #: unfold/templates/unfold/helpers/change_list_filter_actions.html:7
 msgid "Apply Filters"
-msgstr ""
+msgstr "Appliquer les filtres"
 
 #: unfold/templates/unfold/helpers/change_list_filter_actions.html:16
 msgid "Hide counts"
-msgstr ""
+msgstr "Masquer les totaux"
 
 #: unfold/templates/unfold/helpers/change_list_filter_actions.html:20
 msgid "Show counts"
-msgstr ""
+msgstr "Afficher les totaux"
 
 #: unfold/templates/unfold/helpers/change_list_filter_actions.html:27
 msgid "Clear all filters"
-msgstr ""
+msgstr "Effacer tous les filtres"
 
 #: unfold/templates/unfold/helpers/change_list_headers.html:27
 msgid "Select all rows"
-msgstr ""
+msgstr "Sélectionner toutes les lignes"
 
 #: unfold/templates/unfold/helpers/change_list_headers.html:41
 msgid "Toggle sorting"
-msgstr ""
+msgstr "Basculer le tri"
 
 #: unfold/templates/unfold/helpers/change_list_headers.html:49
 msgid "Remove from sorting"
-msgstr ""
+msgstr "Retirer du tri"
 
 #: unfold/templates/unfold/helpers/change_list_headers.html:55
 #, python-format
 msgid "Sorting priority: %(priority_number)s"
-msgstr ""
+msgstr "Priorité de tri : %(priority_number)s"
 
 #: unfold/templates/unfold/helpers/command_history.html:7
 msgid "Recent searches"
-msgstr ""
+msgstr "Recherches récentes"
 
 #: unfold/templates/unfold/helpers/command_history.html:49
 msgid "No recent searches"
-msgstr ""
+msgstr "Aucune recherche récente"
 
 #: unfold/templates/unfold/helpers/command_results.html:44
 msgid "No results matching your query"
-msgstr ""
+msgstr "Aucun résultat ne correspond à votre requête"
 
 #: unfold/templates/unfold/helpers/command_results.html:57
 msgid "Loading more results..."
-msgstr ""
+msgstr "Chargement d'autres résultats..."
 
 #: unfold/templates/unfold/helpers/command_results.html:62
-#, python-format
+#, fuzzy, python-format
+#| msgid ""
+#| "\n"
+#| "                Found %(counter)s result in %(time)s seconds\n"
+#| "            "
+#| msgid_plural ""
+#| "\n"
+#| "                Found %(counter)s results in %(time)s seconds\n"
+#| "            "
 msgid ""
 "\n"
 "                Found %(counter)s result in %(time)s seconds\n"
@@ -946,99 +1138,105 @@ msgid_plural ""
 "                Found %(counter)s results in %(time)s seconds\n"
 "            "
 msgstr[0] ""
+"                %(counter)s résultat trouvé en %(time)s secondes\n"
+"            "
 msgstr[1] ""
+"                %(counter)s résultats trouvés en %(time)s secondes\n"
+"            "
 
 #: unfold/templates/unfold/helpers/delete_submit_line.html:5
 msgid "No, take me back"
-msgstr ""
+msgstr "Non, ramenez-moi en arrière"
 
 #: unfold/templates/unfold/helpers/delete_submit_line.html:9
 msgid "Yes, I’m sure"
-msgstr ""
+msgstr "Oui, je suis sûr"
 
 #: unfold/templates/unfold/helpers/display_header.html:10
 msgid "Record picture"
-msgstr ""
+msgstr "Image de l'enregistrement"
 
 #: unfold/templates/unfold/helpers/edit_inline/tabular_delete.html:4
 msgid "Remove"
-msgstr ""
+msgstr "Retirer"
 
 #: unfold/templates/unfold/helpers/edit_inline/tabular_heading.html:21
 msgid "Delete?"
-msgstr ""
+msgstr "Supprimer ?"
 
 #: unfold/templates/unfold/helpers/empty_results.html:14
 msgid "No results found"
-msgstr "Aucun résultat "
+msgstr "Aucun résultat trouvé"
 
 #: unfold/templates/unfold/helpers/empty_results.html:18
 msgid ""
 "This page yielded into no results. Create a new item or reset your filters."
 msgstr ""
+"Cette page n'a donné aucun résultat. Créez un nouvel élément ou "
+"réinitialisez vos filtres."
 
 #: unfold/templates/unfold/helpers/empty_results.html:32
 msgid "Reset filters"
-msgstr "Réinitialisere les fitres"
+msgstr "Réinitialiser les filtres"
 
 #: unfold/templates/unfold/helpers/field_readonly_value_file.html:8
 #: unfold/templates/unfold/widgets/clearable_file_input.html:6
 msgid "Image preview"
-msgstr ""
+msgstr "Aperçu de l'image"
 
 #: unfold/templates/unfold/helpers/field_readonly_value_file.html:13
 msgid "Click to download"
-msgstr ""
+msgstr "Cliquer pour télécharger"
 
 #: unfold/templates/unfold/helpers/header_back_button.html:7
 #: unfold/templates/unfold/helpers/header_back_button.html:15
 msgid "Go back"
-msgstr ""
+msgstr "Retour"
 
 #: unfold/templates/unfold/helpers/history.html:9
 msgid "Recent actions"
-msgstr ""
+msgstr "Actions récentes"
 
 #: unfold/templates/unfold/helpers/history.html:28
 msgid "Unknown content"
-msgstr ""
+msgstr "Contenu inconnu"
 
 #: unfold/templates/unfold/helpers/messages/errornote.html:5
 msgid "Please correct the error below."
 msgid_plural "Please correct the errors below."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Veuillez corriger l'erreur ci-dessous."
+msgstr[1] "Veuillez corriger les erreurs ci-dessous."
 
 #: unfold/templates/unfold/helpers/pagination_infinite.html:5
 msgid "Previous"
-msgstr ""
+msgstr "Précédent"
 
 #: unfold/templates/unfold/helpers/pagination_infinite.html:9
 msgid "Next"
-msgstr ""
+msgstr "Suivant"
 
 #: unfold/templates/unfold/helpers/popup_header.html:14
 #: unfold/templates/unfold/helpers/welcomemsg.html:25
 #, python-format
 msgid "%(counter)s result"
 msgid_plural "%(counter)s results"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(counter)s résultat"
+msgstr[1] "%(counter)s résultats"
 
 #: unfold/templates/unfold/helpers/popup_header.html:14
 #: unfold/templates/unfold/helpers/welcomemsg.html:25
 #, python-format
 msgid "%(full_result_count)s total"
-msgstr ""
+msgstr "%(full_result_count)s au total"
 
 #: unfold/templates/unfold/helpers/search.html:10
 #: unfold/templates/unfold/helpers/search.html:40
 msgid "Search apps and models..."
-msgstr ""
+msgstr "Rechercher des applications et des modèles..."
 
 #: unfold/templates/unfold/helpers/search.html:41
 msgid "Filter navigation items"
-msgstr ""
+msgstr "Filtrer les éléments de navigation"
 
 #: unfold/templates/unfold/helpers/site_icon.html:7
 #: unfold/templates/unfold/helpers/site_icon.html:9
@@ -1047,89 +1245,129 @@ msgstr ""
 #: unfold/templates/unfold/helpers/site_logo.html:7
 #: unfold/templates/unfold/helpers/site_logo.html:9
 msgid "Home"
-msgstr ""
+msgstr "Accueil"
 
 #: unfold/templates/unfold/helpers/tab_items.html:16
 msgid "General"
-msgstr ""
+msgstr "Général"
 
 #: unfold/templates/unfold/helpers/theme_switch.html:16
 msgid "Dark"
-msgstr ""
+msgstr "Sombre"
 
 #: unfold/templates/unfold/helpers/theme_switch.html:23
 msgid "Light"
-msgstr ""
+msgstr "Clair"
 
 #: unfold/templates/unfold/helpers/theme_switch.html:30
 msgid "System"
-msgstr ""
+msgstr "Système"
 
 #: unfold/templates/unfold/helpers/unauthenticated_header.html:6
 msgid "Return to site"
-msgstr ""
+msgstr "Retourner au site"
 
 #: unfold/templates/unfold/widgets/clearable_file_input.html:25
 #: unfold/templates/unfold/widgets/clearable_file_input_small.html:18
 msgid "Choose file to upload"
-msgstr ""
+msgstr "Choisir un fichier à télécharger"
 
 #: unfold/templates/unfold/widgets/related_widget_wrapper.html:16
 #, python-format
 msgid "Change selected %(model)s"
-msgstr ""
+msgstr "Modifier %(model)s sélectionné"
 
 #: unfold/templates/unfold/widgets/related_widget_wrapper.html:26
 #, python-format
 msgid "Add another %(model)s"
-msgstr ""
+msgstr "Ajouter un autre %(model)s"
 
 #: unfold/templates/unfold/widgets/related_widget_wrapper.html:35
 #, python-format
 msgid "View selected %(model)s"
-msgstr ""
+msgstr "Afficher %(model)s sélectionné"
 
 #: unfold/templates/unfold/widgets/related_widget_wrapper.html:45
 #, python-format
 msgid "Delete selected %(model)s"
-msgstr ""
+msgstr "Supprimer %(model)s sélectionné"
 
 #: unfold/templates/unfold_crispy/layout/table_inline_formset.html:65
 msgid "Add row"
-msgstr ""
+msgstr "Ajouter une ligne"
 
 #: unfold/templatetags/unfold_list.py:132
 msgid "Select all objects on this page for an action"
-msgstr ""
+msgstr "Sélectionner tous les objets de cette page pour une action"
 
 #: unfold/widgets.py:602 unfold/widgets.py:643
 msgid "Date"
-msgstr ""
+msgstr "Date"
 
 #: unfold/widgets.py:827
 msgid "Select currency"
-msgstr ""
+msgstr "Sélectionner la devise"
 
 #: users/models.py:28
 msgid "L'email est obligatoire"
-msgstr ""
+msgstr "L'email est obligatoire"
 
-#: users/models.py:56
-msgid "adresse email"
-msgstr ""
+#: users/models.py:55
+msgid "Rôle"
+msgstr "Rôle"
 
-#: users/models.py:62
-msgid "numéro de téléphone"
-msgstr ""
+#: users/models.py:71
+msgid "Langue"
+msgstr "Langue"
 
-#: users/models.py:67
-msgid "langue"
-msgstr ""
+#: users/models.py:102
+msgid "Utilisateurs"
+msgstr "Utilisateurs"
 
-#: users/models.py:97
-msgid "utilisateur"
-msgstr ""
+#: utils_mixins/models.py:23
+msgid "Date de creation"
+msgstr "Date de création"
 
-#: users/models.py:98
-msgid "utilisateurs"
-msgstr ""
+#: utils_mixins/models.py:28
+msgid "Date de modification"
+msgstr "Date de modification"
+
+#: utils_mixins/models.py:46
+msgid "Créateur"
+msgstr "Créateur"
+
+#: utils_mixins/models.py:55
+msgid "Modificateur"
+msgstr "Modificateur"
+
+#: utils_mixins/models.py:67
+msgid "URL-friendly version of the name"
+msgstr "Version conviviale de l'URL du nom"
+
+#: utils_mixins/models.py:79
+msgid "Name of this record"
+msgstr "Nom de cet enregistrement"
+
+#: utils_mixins/models.py:82
+msgid "Description"
+msgstr "Description"
+
+#: utils_mixins/models.py:84
+msgid "Optional description"
+msgstr "Description facultative"
+
+#: utils_mixins/models.py:97
+msgid "Est actif"
+msgstr "Est actif"
+
+#: utils_mixins/models.py:99
+msgid "Whether this record is active"
+msgstr "Indique si cet enregistrement est actif"
+
+#: utils_mixins/models.py:109
+msgid "Ordre du tri"
+msgstr "Ordre du tri"
+
+#: utils_mixins/models.py:111
+msgid "Order for sorting records"
+msgstr "Ordre pour le classement des enregistrements"
